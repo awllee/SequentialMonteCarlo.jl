@@ -2,15 +2,15 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "index.html#",
-    "page": "SequentialMonteCarlo.jl",
-    "title": "SequentialMonteCarlo.jl",
+    "page": "Contents",
+    "title": "Contents",
     "category": "page",
     "text": ""
 },
 
 {
     "location": "index.html#SequentialMonteCarlo.jl-1",
-    "page": "SequentialMonteCarlo.jl",
+    "page": "Contents",
     "title": "SequentialMonteCarlo.jl",
     "category": "section",
     "text": "A light interface to serial and multi-threaded Sequential Monte CarloPages = [ \"intro.md\", \"smcintegrals.md\", \"smcalgorithm.md\", \"smctheory.md\", \"smcve.md\", \"smcadaptive.md\", \"csmc.md\", \"impl.md\", \"smcinterface.md\", \"guide.md\", \"refs.md\"]"
@@ -353,9 +353,9 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "guide.html#SequentialMonteCarlo.jl-Documentation-1",
+    "location": "guide.html#Documentation-strings-1",
     "page": "Types and functions",
-    "title": "SequentialMonteCarlo.jl Documentation",
+    "title": "Documentation strings",
     "category": "section",
     "text": ""
 },
