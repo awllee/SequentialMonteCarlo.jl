@@ -27,7 +27,7 @@ mutable struct Float64Particle
 end
 
 ## The initial distribution is a standard normal, and the Markov transitions
-## define a non-stationary "autoregressive-like" Markov chain, since 1.5 > 1.
+## define a non-stationary Markov chain, since 1.5 > 1.
 
 function M!(newParticle::Float64Particle, rng::SMCRNG, p::Int64,
   particle::Float64Particle, ::Void)
@@ -50,7 +50,7 @@ end
 ## functions stop the Markov chain from exploding by favouring values
 ## closer to 0. In addition, \hat{Z}_p = (sqrt(3)/3)^p.
 
-## Specify the model using ```M!``` and ```lG```, stating that the maximum
+## Specify the model using M! and lG, stating that the maximum
 ## length of the model is 100, and specifying the types of the particle and
 ## particle scratch space. The latter is Void in this case as no scratch space
 ## is required.
@@ -66,15 +66,14 @@ smcio = SMCIO{model.particle, model.pScratch}(2^20, 10, 1, true)
 
 ## Run the algorithm twice, timing it both times. The first time will include
 ## compilation overhead. The second time there will be no allocations (apart
-## from the small number associated with using the ```@time``` macro).
+## from the small number associated with using the @time macro).
 
 @time smc!(model, smcio)
 @time smc!(model, smcio)
 
-## Check that the approximations in ```smcio.logZhats``` are close to the true
-## values.
+## Check that the approximations in smcio.logZhats are close to the true values.
 
-println(log(sqrt(3)/3) * (1:10))
+println(Vector(log(sqrt(3)/3) * (1:10)))
 println(smcio.logZhats)
 
 ## Check that the first and second moments of the eta_p's (resp. \hat{eta}_p's)
@@ -93,7 +92,8 @@ println(SequentialMonteCarlo.allEtas(smcio, p->p.x*p.x, true))
 ## there are a few such regions at each step of the algorithm. This is due to
 ## Julia's multi-threading interface.
 
-smcio = SMCIO{model.particle, model.pScratch}(2^14, 10, 4, true)
+nthreads = Threads.nthreads()
+smcio = SMCIO{model.particle, model.pScratch}(2^20, 10, nthreads, true)
 
 @time smc!(model, smcio)
 @time smc!(model, smcio)

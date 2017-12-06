@@ -6,7 +6,7 @@ makedocs(
   sitename = "SequentialMonteCarlo.jl",
   authors = "Anthony Lee",
   pages = [
-    "SequentialMonteCarlo.jl" => "index.md"
+    "Contents" => "index.md"
     "Introduction" => "intro.md"
     "SMC integrals" => "smcintegrals.md"
     "SMC algorithm" => "smcalgorithm.md"

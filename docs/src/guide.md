@@ -1,4 +1,4 @@
-# SequentialMonteCarlo.jl Documentation
+# Documentation strings
 
 ## Types
 
