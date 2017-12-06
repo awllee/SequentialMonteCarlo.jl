@@ -1,0 +1,23 @@
+# References
+
+- C. Andrieu, A. Doucet, and R. Holenstein. Particle Markov chain Monte Carlo methods. J. R. Stat. Soc. Ser. B Stat. Methodol., 72(3):269–342, 2010.
+- C. Andrieu, A. Lee, and M. Vihola. Uniform ergodicity of the iterated conditional SMC and geometric ergodicity of particle Gibbs samplers. Bernoulli, 24(2):842–-872, 2018.
+- H. P. Chan and T. L. Lai. A general theory of particle filters in hidden Markov models and some applications. Ann. Statist. 41(6):2877–2904, 2013.
+- N. Chopin and S. S. Singh. On particle Gibbs sampling. Bernoulli, 21(3):1855–-1883, 2015.
+- P. Del Moral. Feynman--Kac formulae: genealogical and interacting particle systems with applications. Springer-Verlag, 2004.
+- P. Del Moral, A. Doucet, and A. Jasra. On adaptive resampling procedures for sequential Monte Carlo methods. Bernoulli, 18(1):252--278, 2012.
+- L. Devroye. Non-uniform random variate generation. Springer-Verlag, 1986.
+- A. Doucet and A. M. Johansen. A tutorial on particle filtering and smoothing: Fifteen years later. In D. Crisan and B. Rozovsky, eds., The Oxford Handbook of Nonlinear Filtering, pp. 656–-704. Oxford University Press, 2011.
+- A. Doucet and A. Lee.  Sequential Monte Carlo methods. In M. Drton, S. Lauritzen, M. Maathuis, and M. Wainwright, eds., Handbook of Graphical Models. 2018. In press.
+- N. J. Gordon, D. J. Salmond, and A. F. M. Smith. Novel approach to nonlinear/non-Gaussian Bayesian state estimation. Radar and Signal Processing, IEE Proceedings F, 140(2):107–-113, 1993.
+- W. Hörmann. The generation of binomial random variates. J. Stat. Comput. Simul., 46(1--2):101–-110, 1993.
+- G. Kitagawa. A Monte Carlo filtering and smoothing method for non-Gaussian nonlinear state space models. In Proceedings of the 2nd US-Japan Joint Seminar on Statistical Time Series Analysis, pp. 110--131, 1993.
+- A. Kong, J. S. Liu, and W. H. Wong. Sequential imputations and Bayesian missing data problems. J. Am. Stat. Assoc., 89(425):278--288, 1994.
+- A. Lee and N. Whiteley. Variance estimation in the particle filter. arXiv:1509.00394, 2015.
+- A. Lee, C. Yau, M. B. Giles, A. Doucet, and C. C. Holmes. On the utility of graphics cards to perform massively parallel simulation of advanced Monte Carlo methods. J. Comput. Graph. Statist., 19(4):769–-789, 2010.
+- F. Lindsten, R. Douc, and E. Moulines. Uniform ergodicity of the particle Gibbs sampler. Scand. J. Statist., 42(3):775-–797, 2015.
+- J. S. Liu and R. Chen. Blind deconvolution via sequential imputations. J. Am. Stat. Assoc., 90:567–-576, 1995.
+- D. Lurie and H. O. Hartley. Machine-generation of order statistics for Monte Carlo computations. Am. Stat., 26(1):26–-27, 1972.
+- L. M. Murray. Bayesian state-space modelling on high-performance hardware using LibBi. J. Stat. Softw. 67(10):1--36, 2015.
+- L. Stewart and P. McCarty Jr. Use of Bayesian belief networks to fuse continuous and discrete information for target recognition, tracking, and situation assessment. In Aerospace Sensing, pp. 177-–185. International Society for Optics and Photonics, 1992.
+- N. Whiteley, A. Lee, and K. Heine. On the role of interaction in sequential Monte Carlo algorithms. Bernoulli, 22(1):494–-529, 2016.
