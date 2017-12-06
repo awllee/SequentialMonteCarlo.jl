@@ -16,7 +16,7 @@ Fairly complete documentation is available at ***link***
 
 ## Quick start:
 
-```
+```julia
 ## Load the package
 
 using SequentialMonteCarlo
