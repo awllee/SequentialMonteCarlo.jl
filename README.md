@@ -6,13 +6,11 @@
 
 [![codecov.io](http://codecov.io/github/awllee/SequentialMonteCarlo.jl/coverage.svg?branch=master)](http://codecov.io/github/awllee/SequentialMonteCarlo.jl?branch=master)
 
-This package provides a serial and multi-threaded implementation of the
-Sequential Monte Carlo (SMC) algorithm. SMC is a random algorithm for numerical
-integration and/or sampling.
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://awllee.github.io/SequentialMonteCarlo.jl/latest)
 
-## Documentation
+This package provides a light interface to a serial and multi-threaded implementation of the Sequential Monte Carlo (SMC) algorithm. SMC is a random algorithm for approximate numerical integration and/or sampling.
 
-Fairly complete documentation is available at ***link***
+The [documentation](https://awllee.github.io/SequentialMonteCarlo.jl/latest) and some [examples](https://github.com/awllee/SMCExamples.jl) may be helpful for getting started.
 
 ## Quick start:
 
@@ -75,6 +73,7 @@ smcio = SMCIO{model.particle, model.pScratch}(2^20, 10, 1, true)
 
 ## Check that the approximations in ```smcio.logZhats``` are close to the true
 ## values.
+
 println(log(sqrt(3)/3) * (1:10))
 println(smcio.logZhats)
 
