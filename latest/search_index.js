@@ -1,19 +1,19 @@
 var documenterSearchIndex = {"docs": [
 
 {
-    "location": "contents.html#",
-    "page": "Contents",
-    "title": "Contents",
+    "location": "index.html#",
+    "page": "SequentialMonteCarlo.jl",
+    "title": "SequentialMonteCarlo.jl",
     "category": "page",
     "text": ""
 },
 
 {
-    "location": "contents.html#Contents-1",
-    "page": "Contents",
-    "title": "Contents",
+    "location": "index.html#SequentialMonteCarlo.jl-1",
+    "page": "SequentialMonteCarlo.jl",
+    "title": "SequentialMonteCarlo.jl",
     "category": "section",
-    "text": "Pages = [ \"intro.md\", \"smcintegrals.md\", \"smcalgorithm.md\", \"smctheory.md\", \"smcve.md\", \"smcadaptive.md\", \"csmc.md\", \"impl.md\", \"smcinterface.md\", \"guide.md\", \"refs.md\"]"
+    "text": "A light interface to serial and multi-threaded Sequential Monte CarloPages = [ \"intro.md\", \"smcintegrals.md\", \"smcalgorithm.md\", \"smctheory.md\", \"smcve.md\", \"smcadaptive.md\", \"csmc.md\", \"impl.md\", \"smcinterface.md\", \"guide.md\", \"refs.md\"]"
 },
 
 {
