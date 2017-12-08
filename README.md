@@ -1,11 +1,8 @@
-# SequentialMonteCarlo
+# SequentialMonteCarlo.jl
 
 [![Build Status](https://travis-ci.org/awllee/SequentialMonteCarlo.jl.svg?branch=master)](https://travis-ci.org/awllee/SequentialMonteCarlo.jl)
-
 [![Coverage Status](https://coveralls.io/repos/awllee/SequentialMonteCarlo.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/awllee/SequentialMonteCarlo.jl?branch=master)
-
 [![codecov.io](http://codecov.io/github/awllee/SequentialMonteCarlo.jl/coverage.svg?branch=master)](http://codecov.io/github/awllee/SequentialMonteCarlo.jl?branch=master)
-
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://awllee.github.io/SequentialMonteCarlo.jl/latest)
 
 This package provides a light interface to a serial and multi-threaded implementation of the Sequential Monte Carlo (SMC) algorithm. SMC is a random algorithm for approximate numerical integration and/or sampling.
@@ -85,9 +82,9 @@ println(SequentialMonteCarlo.allEtas(smcio, p->p.x*p.x, false))
 println(SequentialMonteCarlo.allEtas(smcio, p->p.x, true))
 println(SequentialMonteCarlo.allEtas(smcio, p->p.x*p.x, true))
 
-## Now try with 4 threads instead of 1 and time the algorithm. There are
-## compilation overheads the first time for the parallel parts of the SMC
-## implementation. There are still a number of small allocations the second
+## Now try with Threads.nthreads() threads instead of 1 and time the algorithm.
+## There are compilation overheads the first time for the parallel parts of the
+## SMC implementation. There are still a number of small allocations the second
 ## time; there is an allocation for each parallel region in the algorithm, and
 ## there are a few such regions at each step of the algorithm. This is due to
 ## Julia's multi-threading interface.

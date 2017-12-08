@@ -1,4 +1,4 @@
-# Introduction
+# [Introduction](@id intro)
 
 Sequential Monte Carlo (SMC) algorithms are defined in terms of an initial distribution $M_1$, a sequence of Markov transition kernels $M_{2}, \ldots, M_n$ and a sequence of non-negative potential functions $G_1, \ldots, G_n$.
 

@@ -36,7 +36,7 @@ Lee & Whiteley (2015) also define approximations $v_{p,n}^N(f)$ and $\hat{v}_{p,
 ---
 **Theorem** [Lee & Whiteley, 2015]. Let the potential functions $G_1, \ldots, G_n$ be bounded and strictly positive. The following hold for an arbitrary, bounded $f$:
 
-1. Lack-of-bias: $\mathbb{E}\left[\left(\hat{Z}_n^N\right)^2\hat{v}_{p,n}^N(f)\right]=\hat{Z}_n^2\hat{\sigma}_n^2(f)$ for all $N\geq1$.
+1. Lack-of-bias: $\mathbb{E}\left[\left(\hat{Z}_n^N\right)^2\hat{v}_{p,n}^N(f)\right]=\hat{Z}_n^2\hat{v}_{p,n}(f)$ for all $N\geq1$.
 
 2. Consistency: $\hat{v}_{p,n}^N(f)\overset{P}{\rightarrow}\hat{v}_{p,n}(f)$ and $\hat{v}_{p,n}^N(f)(f-\hat{\eta}_n^N(f))\overset{P}{\rightarrow}\hat{v}_{p,n}(f-\hat{\eta}_n(f))$.
 

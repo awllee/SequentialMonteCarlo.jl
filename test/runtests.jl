@@ -19,16 +19,16 @@ end
   @time include("multinomial_test.jl")
 end
 
-# include("finiteFK_test.jl")
-#
-# @testset "LGModel tests" begin
-#   @time include("lgModel_test.jl")
-# end
-#
-# @testset "MVLGModel tests" begin
-#   @time include("mvlgModel_test.jl")
-# end
-#
-# @testset "SMC Sampler tests" begin
-#   @time include("smcSampler_test.jl")
-# end
+include("finiteFK_test.jl")
+
+@testset "LGModel tests" begin
+  @time include("lgModel_test.jl")
+end
+
+@testset "MVLGModel tests" begin
+  @time include("mvlgModel_test.jl")
+end
+
+@testset "SMC Sampler tests" begin
+  @time include("smcSampler_test.jl")
+end

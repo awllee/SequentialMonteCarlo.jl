@@ -17,6 +17,7 @@ makedocs(
     "Implementation notes" => "impl.md"
     "SMC interface" => "smcinterface.md"
     "Types and functions" => "guide.md"
+    "Hidden Markov models" => "hmm.md"
     "References" => "refs.md"
   ]
 )

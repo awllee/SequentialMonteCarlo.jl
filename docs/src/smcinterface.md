@@ -2,7 +2,7 @@
 
 ## Specifying an SMC model
 
-We recall from the [Introduction](@ref) that the SMC algorithm is defined in terms of $M_1, \ldots, M_n$ and $G_1, \ldots, G_n$.
+We recall from the [Introduction](@ref intro) that the SMC algorithm is defined in terms of $M_1, \ldots, M_n$ and $G_1, \ldots, G_n$.
 
 A ```model``` of type ```SMCModel``` can be created by calling
 ```
@@ -47,9 +47,11 @@ with ```hat``` determining which approximation is returned. Calling this functio
 
 One can extract the approximations $(\eta^N_p(f) \geq 0, \log |\gamma^N_p(f)|)$ or $(\hat{\eta}^N_p(f) \geq 0, \log |\hat{\gamma}^N_p(f)|)$ by calling
 ```
-slgamma(smcio, f, hat::Bool, p::Int64)
+SequentialMonteCarlo.slgamma(smcio, f, hat::Bool, p::Int64)
 ```
 with ```hat``` determining which approximation is returned. Calling this function with ```p < smcio.n``` requires ```smcio.fullOutput = true```.
+
+If ```smcio.fullOutput = true``` one can call ```SequentialMonteCarlo.allEtas``` or ```SequentialMonteCarlo.allGammas``` to obtain a vector of outputs of ```SequentialMonteCarlo.eta``` or ```SequentialMonteCarlo.slgamma```, respectively.
 
 ## Variance estimators
 
