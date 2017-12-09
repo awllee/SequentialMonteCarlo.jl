@@ -1,5 +1,5 @@
-VERSION.minor == 6 && using Base.Test
-VERSION.minor > 6 && using Test
+using Compat.Test
+import Compat.uninitialized
 
 function testapproxequal(a::Vector{Float64}, b::Vector{Float64}, tol::Float64,
   verbose::Bool)

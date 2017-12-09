@@ -5,7 +5,7 @@
   fieldNames = fieldnames(dest)
   fieldTypes = dest.types
   numFields = length(fieldNames)
-  expressions = Array{Expr}(numFields)
+  expressions = Array{Expr}(uninitialized, numFields)
 
   for i = 1:numFields
     fieldName = fieldNames[i]

@@ -26,7 +26,7 @@
 const SMCRNG = MersenneTwister
 
 let
-  engines::Vector{SMCRNG} = Vector{SMCRNG}(0)
+  engines::Vector{SMCRNG} = Vector{SMCRNG}(uninitialized, 0)
   global function getSMCRNG()
     @inbounds return engines[Threads.threadid()]
   end
@@ -38,7 +38,7 @@ let
   end
   ## happens at runtime to avoid false sharing
   global function initializeSMCRNGs()
-    engines = Vector{SMCRNG}(Threads.nthreads())
+    engines = Vector{SMCRNG}(uninitialized, Threads.nthreads())
     Threads.@threads for i = 1:length(engines)
       @inbounds engines[Threads.threadid()] =
         MersenneTwister(Base.Random.make_seed())

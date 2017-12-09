@@ -1,9 +1,7 @@
 using SequentialMonteCarlo
 using SMCExamples.FiniteFeynmanKac
 import SMCExamples.Particles.Int64Particle
-
-VERSION.minor == 6 && using Base.Test
-VERSION.minor > 6 && using Test
+using Compat.Test
 
 function Id(p::Int64Particle)
   return p.x

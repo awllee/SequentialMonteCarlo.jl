@@ -1,8 +1,6 @@
 using SequentialMonteCarlo
 import SMCExamples.SMCSampler.defaultSMCSampler
-
-VERSION.minor == 6 && using Base.Test
-VERSION.minor > 6 && using Test
+using Compat.Test
 
 setSMCRNGs(0)
 

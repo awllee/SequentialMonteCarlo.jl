@@ -79,7 +79,7 @@ Compute ```eta(smcio::SMCIO, f::F, hat::Bool, p)``` for p in {1, …, smcio.n}
 """
 function allEtas(smcio::SMCIO, f::F, hat::Bool) where F<:Function
   T = typeof(f(smcio.zetas[1]) / smcio.N)
-  result::Vector{T} = Vector{T}(smcio.n)
+  result::Vector{T} = Vector{T}(uninitialized, smcio.n)
   for p = 1:smcio.n
     @inbounds result[p] = eta(smcio, f, hat, p)
   end

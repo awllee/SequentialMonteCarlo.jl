@@ -1,9 +1,7 @@
 import SequentialMonteCarlo.sampleMultinomial!
 import SequentialMonteCarlo.setSMCRNGs
 import SequentialMonteCarlo.getSMCRNG
-
-VERSION.minor == 6 && using Base.Test
-VERSION.minor > 6 && using Test
+using Compat.Test
 
 setSMCRNGs(0)
 
@@ -15,7 +13,7 @@ function multinomial_test()
   m = 2^18
   array = zeros(Float64, 3)
   array2 = zeros(Float64, 3)
-  result = Vector{Int64}(3)
+  result = Vector{Int64}(uninitialized, 3)
   E = n*p
   V = n*p.*(1.0 .- p)
 

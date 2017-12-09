@@ -2,9 +2,7 @@ using SequentialMonteCarlo
 using SMCExamples.MVLinearGaussian
 using StaticArrays
 import SMCExamples.Particles.MVFloat64Particle
-
-VERSION.minor == 6 && using Base.Test
-VERSION.minor > 6 && using Test
+using Compat.Test
 
 setSMCRNGs(0)
 

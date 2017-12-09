@@ -1,8 +1,6 @@
 using SequentialMonteCarlo
 using SMCExamples.LinearGaussian
-
-VERSION.minor == 6 && using Base.Test
-VERSION.minor > 6 && using Test
+using Compat.Test
 
 setSMCRNGs(0)
 
