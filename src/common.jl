@@ -54,8 +54,8 @@ end
 
 ## better not to inline ; enough work should be done in the loop
 function _mutateParticles!(zetas::Vec, engine::SMCRNG, p::Int64, M!::F,
-  zetaAncs::Vec, pScratch) where {Particle, Vec<:AbstractVector{Particle},
-    F<:Function}
+  zetaAncs::Vec, pScratch::ParticleScratch) where {Particle,
+  Vec<:AbstractVector{Particle}, F<:Function, ParticleScratch}
   for j in eachindex(zetas)
     @inbounds M!(zetas[j], engine, p, zetaAncs[j], pScratch)
   end
@@ -63,8 +63,8 @@ end
 
 ## better not to inline ; enough work should be done in the loop
 function _mutateParticles!(zetas::Vec, engine::SMCRNG, p::Int64, M!::F,
-  zetaAncs::Vec, pScratch, xref::Particle) where {Particle,
-  Vec<:AbstractVector{Particle}, F<:Function}
+  zetaAncs::Vec, pScratch::ParticleScratch, xref::Particle) where {Particle,
+  Vec<:AbstractVector{Particle}, F<:Function, ParticleScratch}
   particleCopy!(zetas[1], xref)
   for j in 2:length(zetas)
     @inbounds M!(zetas[j], engine, p, zetaAncs[j], pScratch)
@@ -73,9 +73,9 @@ end
 
 ## better not to inline ; enough work should be done in the loop
 function _logWeightParticles!(lws::Vec1, p::Int64, lG::F,
-  zetas::Vec2, pScratch, resample::Bool, oldWs::Vec1) where
+  zetas::Vec2, pScratch::ParticleScratch, resample::Bool, oldWs::Vec1) where
   {Vec1<:AbstractVector{Float64}, F<:Function, Particle,
-  Vec2<:AbstractVector{Particle}}
+  Vec2<:AbstractVector{Particle}, ParticleScratch}
   for j in eachindex(zetas)
     @inbounds lws[j] = lG(p, zetas[j], pScratch)
   end

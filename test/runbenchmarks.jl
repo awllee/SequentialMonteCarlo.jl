@@ -4,15 +4,16 @@ import SMCExamples.MVLinearGaussian.defaultMVLGModel
 import SMCExamples.SMCSampler.defaultSMCSampler
 import SMCExamples.Lorenz96.defaultLorenzModel
 
-VERSION.minor > 6 && using Dates
+using Compat.Dates
 
 using BenchmarkTools, Compat
 import Hwloc
 
 function benchMachineInfo()
-  s::String = "$(Sys.MACHINE) ; " *
+  s::String = "$(Sys.MACHINE)\n" *
     "$(Sys.cpu_info()[1].model) ($(Sys.cpu_name)) ; " *
-    "$(Hwloc.num_physical_cores()) Physical, $(Sys.CPU_CORES) Logical"
+    "$(Hwloc.num_physical_cores()) Physical, $(Sys.CPU_CORES) Logical\n" *
+    "Julia $VERSION using $(Threads.nthreads()) threads"
   return s
 end
 
@@ -22,12 +23,18 @@ function dateandtime()
   return s
 end
 
+function closestN(N::Int64, nt::Int64)
+  mod(N, nt) == 0 && return N
+  return round(Int64, N / nt) * nt
+end
+
 function bench(model, range)
   nt = Threads.nthreads()
-  println("log₂N  Threads  Benchmark")
+  println("log₂N  Benchmark")
   for k in range
-    print("$(lpad(k,2,0))     $(lpad(nt,2,0))     ")
-    smcio = SMCIO{model.particle, model.pScratch}(2^k, model.maxn, nt, false)
+    print("$(lpad(k,2,0))   ")
+    N::Int64 = closestN(2^k, nt)
+    smcio = SMCIO{model.particle, model.pScratch}(N, model.maxn, nt, false)
     @btime smc!($model, $smcio)
   end
 end
@@ -51,6 +58,6 @@ bench(model, range)
 
 println("Lorenz96 Example, d = 8, n = 10")
 model, theta, ys = defaultLorenzModel(8, 10)
-bench(model, range[1:2])
+bench(model, range)
 
 println("Finished: $(dateandtime())")

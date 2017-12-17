@@ -21,21 +21,10 @@ const SubVectorI64 = SubArray{Int64, 1, Array{Int64, 1},
   Tuple{UnitRange{Int64}}, true}
 const SubVector{Particle} = SubArray{Particle,1,Array{Particle,1},Tuple{UnitRange{Int64}},true}
 
-# the fields of this struct are used by the SMC algorithm
+# the fields of this struct are used by the parallel SMC algorithm
 # they are not intended for use by users of the package
-mutable struct _SMCInternal{Particle, ParticleScratch}
+mutable struct _SMCInternalParallel{Particle, ParticleScratch}
   Nperthread::Int64
-  zetaAncs::Vector{Particle}
-  oldEves::Vector{Int64}
-  as::Vector{Int64}
-  lws::Vector{Float64}
-  scratch1::Vector{Float64}
-  scratch2::Vector{Float64}
-  nresamples::Int64
-
-  sws::Float64
-  mws::Float64
-  maxlw::Float64
   maxlws::Vector{Float64}
   partialSums::Vector{Float64}
   partialSumSqs::Vector{Float64}
@@ -57,6 +46,176 @@ mutable struct _SMCInternal{Particle, ParticleScratch}
   localAllZetas::Vector{Vector{SubVector{Particle}}}
   localAllEves::Vector{Vector{SubVectorI64}}
   localAllWs::Vector{Vector{SubVectorF64}}
+end
+
+function _SMCInternalParallel{Particle, ParticleScratch}(N::Int64, n::Int64,
+  nthreads::Int64, fullOutput::Bool) where {Particle, ParticleScratch}
+  @assert mod(N, nthreads) == 0 "N must be a multiple of nthreads"
+  Nperthread = div(N, nthreads)
+
+  if nthreads > 1
+    maxlws::Vector{Float64} = Vector{Float64}(uninitialized, nthreads)
+    partialSums::Vector{Float64} = Vector{Float64}(uninitialized, nthreads)
+    partialSumSqs::Vector{Float64} = Vector{Float64}(uninitialized, nthreads)
+    Ns::Vector{Int64} = Vector{Int64}(uninitialized, nthreads)
+    NsPartial::Vector{Int64} = Vector{Int64}(uninitialized, nthreads)
+
+    particleScratches::Vector{ParticleScratch} =
+      Vector{ParticleScratch}(uninitialized, nthreads)
+    # avoid false sharing
+    Threads.@threads for i = 1:nthreads
+      @inbounds particleScratches[i] = ParticleScratch()
+    end
+
+    localAs::Vector{SubVectorI64} =
+      Vector{SubVectorI64}(uninitialized, nthreads)
+    localEves::Vector{SubVectorI64} =
+      Vector{SubVectorI64}(uninitialized, nthreads)
+    localOldEves::Vector{SubVectorI64} =
+      Vector{SubVectorI64}(uninitialized, nthreads)
+    localZetas::Vector{SubVector{Particle}} =
+      Vector{SubVector{Particle}}(uninitialized, nthreads)
+    localZetaAncs::Vector{SubVector{Particle}} =
+      Vector{SubVector{Particle}}(uninitialized, nthreads)
+    localWs::Vector{SubVectorF64} =
+      Vector{SubVectorF64}(uninitialized, nthreads)
+    localLogWs::Vector{SubVectorF64} =
+      Vector{SubVectorF64}(uninitialized, nthreads)
+    localScratch1s::Vector{SubVectorF64} =
+      Vector{SubVectorF64}(uninitialized, nthreads)
+  else
+    maxlws = Vector{Float64}(uninitialized, 0)
+    partialSums = Vector{Float64}(uninitialized, 0)
+    partialSumSqs = Vector{Float64}(uninitialized, 0)
+    Ns = Vector{Int64}(uninitialized, 0)
+    NsPartial = Vector{Int64}(uninitialized, 0)
+    particleScratches = Vector{ParticleScratch}(uninitialized, 0)
+
+    localAs = Vector{SubVectorI64}(uninitialized, 0)
+    localEves = Vector{SubVectorI64}(uninitialized, 0)
+    localOldEves = Vector{SubVectorI64}(uninitialized, 0)
+    localZetas = Vector{SubVector{Particle}}(uninitialized, 0)
+    localZetaAncs = Vector{SubVector{Particle}}(uninitialized, 0)
+    localWs = Vector{SubVectorF64}(uninitialized, 0)
+    localLogWs = Vector{SubVectorF64}(uninitialized, 0)
+    localScratch1s = Vector{SubVectorF64}(uninitialized, 0)
+  end
+
+  if fullOutput && nthreads > 1
+    localAllZetas::Vector{Vector{SubVector{Particle}}} =
+      Vector{Vector{SubVector{Particle}}}(uninitialized, n)
+    localAllAs::Vector{Vector{SubVectorI64}} =
+      Vector{Vector{SubVectorI64}}(uninitialized, n-1)
+    localAllEves::Vector{Vector{SubVectorI64}} =
+      Vector{Vector{SubVectorI64}}(uninitialized, n)
+    localAllWs::Vector{Vector{SubVectorF64}} =
+      Vector{Vector{SubVectorF64}}(uninitialized, n)
+    for p = 1:n
+      localAllZetas[p] = Vector{SubVector{Particle}}(uninitialized, nthreads)
+      localAllEves[p] = Vector{SubVectorI64}(uninitialized, nthreads)
+      localAllWs[p] = Vector{SubVectorF64}(uninitialized, nthreads)
+      p < n && (localAllAs[p] = Vector{SubVectorI64}(uninitialized, nthreads))
+    end
+  else
+    localAllAs = Vector{Vector{SubVectorI64}}(uninitialized, 0)
+    localAllZetas = Vector{Vector{SubVector{Particle}}}(uninitialized, 0)
+    localAllEves = Vector{Vector{SubVectorI64}}(uninitialized, 0)
+    localAllWs = Vector{Vector{SubVectorF64}}(uninitialized, 0)
+  end
+
+  return _SMCInternalParallel(Nperthread, maxlws, partialSums, partialSumSqs,
+    Ns, NsPartial, particleScratches, localAs, localEves, localOldEves,
+    localZetas, localZetaAncs, localWs, localLogWs, localScratch1s, localAllAs,
+    localAllZetas, localAllEves, localAllWs)
+end
+
+# the fields of this struct are used by the SMC algorithm
+# they are not intended for use by users of the package
+mutable struct _SMCInternal{Particle, ParticleScratch}
+  zetaAncs::Vector{Particle}
+  oldEves::Vector{Int64}
+  as::Vector{Int64}
+  lws::Vector{Float64}
+  scratch1::Vector{Float64}
+  scratch2::Vector{Float64}
+  nresamples::Int64
+
+  sws::Float64
+  mws::Float64
+  maxlw::Float64
+  particleScratch::ParticleScratch
+
+  parallel::_SMCInternalParallel{Particle, ParticleScratch}
+end
+
+## constructor for _SMCInternal
+function _SMCInternal{Particle, ParticleScratch}(N::Int64, n::Int64,
+  nthreads::Int64, fullOutput::Bool) where {Particle, ParticleScratch}
+
+  lws = Vector{Float64}(uninitialized, N)
+  as = Vector{Int64}(uninitialized, N)
+  fill!(as, 1)
+  scratch1 = Vector{Float64}(uninitialized, N)
+  scratch2 = Vector{Float64}(uninitialized, N)
+  nresamples::Int64 = 0
+  zetaAncs = Vector{Particle}(uninitialized, N)
+  for i=1:N
+    zetaAncs[i] = Particle()
+  end
+  oldEves = Vector{Int64}(uninitialized, N)
+
+  ## assign user-defined particle scratch space
+  @assert ParticleScratch == Void || !isbits(ParticleScratch)
+  particleScratch = ParticleScratch()
+
+  parallel::_SMCInternalParallel{Particle, ParticleScratch} =
+    _SMCInternalParallel{Particle, ParticleScratch}(N, n, nthreads, fullOutput)
+
+  return _SMCInternal(zetaAncs, oldEves, as, lws, scratch1,
+    scratch2, nresamples, 0.0, 0.0, 0.0, particleScratch, parallel)
+end
+
+function _assignThreadViews(internal::_SMCInternal{Particle},
+  zetas::Vector{Particle}, eves::Vector{Int64}, ws::Vector{Float64},
+  allZetas::Vector{Vector{Particle}}, allWs::Vector{Vector{Float64}},
+  allAs::Vector{Vector{Int64}}, allEves::Vector{Vector{Int64}}) where Particle
+
+  zetaAncs::Vector{Particle} = internal.zetaAncs
+  as::Vector{Int64} = internal.as
+  oldEves::Vector{Int64} = internal.oldEves
+  lws::Vector{Float64} = internal.lws
+  scratch1::Vector{Float64} = internal.scratch1
+
+  ip::_SMCInternalParallel = internal.parallel
+  nthreads::Int64 = length(ip.localWs)
+  Nperthread::Int64 = ip.Nperthread
+  for i = 1:nthreads
+    start = Nperthread * (i - 1) + 1
+    finish = start + Nperthread - 1
+    ip.localAs[i] = view(as, start:finish)
+    ip.localEves[i] = view(eves, start:finish)
+    ip.localOldEves[i] = view(oldEves, start:finish)
+    ip.localZetas[i] = view(zetas, start:finish)
+    ip.localZetaAncs[i] = view(zetaAncs, start:finish)
+    ip.localWs[i] = view(ws, start:finish)
+    ip.localLogWs[i] = view(lws, start:finish)
+    ip.localScratch1s[i] = view(scratch1, start:finish)
+  end
+
+  fullOutput::Bool = length(ip.localAllWs) > 0
+  if fullOutput && nthreads > 1
+    n::Int64 = length(allWs)
+    for p = 1:n
+      for i = 1:nthreads
+        start = Nperthread * (i - 1) + 1
+        finish = start + Nperthread - 1
+        ip.localAllZetas[p][i] = view(allZetas[p], start:finish)
+        ip.localAllEves[p][i] = view(allEves[p], start:finish)
+        ip.localAllWs[p][i] = view(allWs[p], start:finish)
+        p < n && (ip.localAllAs[p][i] = view(allAs[p], start:finish))
+      end
+    end
+  end
 end
 
 ## SMC input / output struct. Also contains internal state for the SMC
@@ -106,120 +265,6 @@ struct SMCIO{Particle, ParticleScratch}
   allEves::Vector{Vector{Int64}}
 end
 
-## constructor for _SMCInternal
-function _SMCInternal{ParticleScratch}(N::Int64, n::Int64,
-  nthreads::Int64, fullOutput::Bool, zetas::Vector{Particle},
-  eves::Vector{Int64}, ws::Vector{Float64}, allZetas::Vector{Vector{Particle}},
-  allWs::Vector{Vector{Float64}}, allAs::Vector{Vector{Int64}},
-  allEves::Vector{Vector{Int64}}) where {Particle, ParticleScratch}
-  Nperthread = div(N, nthreads)
-  lws = Vector{Float64}(uninitialized, N)
-  as = Vector{Int64}(uninitialized, N)
-  fill!(as,1)
-  scratch1 = Vector{Float64}(uninitialized, N)
-  scratch2 = Vector{Float64}(uninitialized, N)
-  nresamples::Int64 = 0
-
-  zetaAncs = Vector{Particle}(uninitialized, N)
-  for i=1:N
-    zetaAncs[i] = Particle()
-  end
-
-  oldEves = Vector{Int64}(uninitialized, N)
-  maxlws::Vector{Float64} = Vector{Float64}(uninitialized, nthreads)
-  partialSums::Vector{Float64} = Vector{Float64}(uninitialized, nthreads)
-  partialSumSqs::Vector{Float64} = Vector{Float64}(uninitialized, nthreads)
-  Ns::Vector{Int64} = Vector{Int64}(uninitialized, nthreads)
-  NsPartial::Vector{Int64} = Vector{Int64}(uninitialized, nthreads)
-
-  ## assign user-defined particle scratch space
-  particleScratches::Vector{ParticleScratch} =
-    Vector{ParticleScratch}(uninitialized, nthreads)
-  @assert ParticleScratch == Void || !isbits(ParticleScratch)
-  # avoid false sharing
-  Threads.@threads for i = 1:nthreads
-    @inbounds particleScratches[i] = ParticleScratch()
-  end
-
-  ## assign thread views of vectors
-  if nthreads > 1
-    localAs::Vector{SubVectorI64} =
-      Vector{SubVectorI64}(uninitialized, nthreads)
-    localEves::Vector{SubVectorI64} =
-      Vector{SubVectorI64}(uninitialized, nthreads)
-    localOldEves::Vector{SubVectorI64} =
-      Vector{SubVectorI64}(uninitialized, nthreads)
-    localZetas::Vector{SubVector{Particle}} =
-      Vector{SubVector{Particle}}(uninitialized, nthreads)
-    localZetaAncs::Vector{SubVector{Particle}} =
-      Vector{SubVector{Particle}}(uninitialized, nthreads)
-    localWs::Vector{SubVectorF64} =
-      Vector{SubVectorF64}(uninitialized, nthreads)
-    localLogWs::Vector{SubVectorF64} =
-      Vector{SubVectorF64}(uninitialized, nthreads)
-    localScratch1s::Vector{SubVectorF64} =
-      Vector{SubVectorF64}(uninitialized, nthreads)
-    for i = 1:nthreads
-      start = Nperthread * (i - 1) + 1
-      finish = start + Nperthread - 1
-      localAs[i] = view(as, start:finish)
-      localEves[i] = view(eves, start:finish)
-      localOldEves[i] = view(oldEves, start:finish)
-      localZetas[i] = view(zetas, start:finish)
-      localZetaAncs[i] = view(zetaAncs, start:finish)
-      localWs[i] = view(ws, start:finish)
-      localLogWs[i] = view(lws, start:finish)
-      localScratch1s[i] = view(scratch1, start:finish)
-    end
-  else
-    localAs= Vector{SubVectorI64}(uninitialized, 0)
-    localEves = Vector{SubVectorI64}(uninitialized, 0)
-    localOldEves = Vector{SubVectorI64}(uninitialized, 0)
-    localZetas = Vector{SubVector{Particle}}(uninitialized, 0)
-    localZetaAncs = Vector{SubVector{Particle}}(uninitialized, 0)
-    localWs = Vector{SubVectorF64}(uninitialized, 0)
-    localLogWs = Vector{SubVectorF64}(uninitialized, 0)
-    localScratch1s = Vector{SubVectorF64}(uninitialized, 0)
-  end
-
-  if fullOutput && nthreads > 1
-    localAllZetas::Vector{Vector{SubVector{Particle}}} =
-      Vector{Vector{SubVector{Particle}}}(uninitialized, n)
-    localAllAs::Vector{Vector{SubVectorI64}} =
-      Vector{Vector{SubVectorI64}}(uninitialized, n-1)
-    localAllEves::Vector{Vector{SubVectorI64}} =
-      Vector{Vector{SubVectorI64}}(uninitialized, n)
-    localAllWs::Vector{Vector{SubVectorF64}} =
-      Vector{Vector{SubVectorF64}}(uninitialized, n)
-    for p = 1:n
-      localAllZetas[p] = Vector{SubVector{Particle}}(uninitialized, nthreads)
-      localAllEves[p] = Vector{SubVectorI64}(uninitialized, nthreads)
-      localAllWs[p] = Vector{SubVectorF64}(uninitialized, nthreads)
-      p < n && (localAllAs[p] = Vector{SubVectorI64}(uninitialized, nthreads))
-      for i = 1:nthreads
-        start = Nperthread * (i - 1) + 1
-        finish = start + Nperthread - 1
-        localAllZetas[p][i] = view(allZetas[p], start:finish)
-        localAllEves[p][i] = view(allEves[p], start:finish)
-        localAllWs[p][i] = view(allWs[p], start:finish)
-        p < n && (localAllAs[p][i] = view(allAs[p], start:finish))
-      end
-    end
-  else
-    localAllAs = Vector{Vector{SubVectorI64}}(uninitialized, 0)
-    localAllZetas = Vector{Vector{SubVector{Particle}}}(uninitialized, 0)
-    localAllEves = Vector{Vector{SubVectorI64}}(uninitialized, 0)
-    localAllWs = Vector{Vector{SubVectorF64}}(uninitialized, 0)
-  end
-
-  return _SMCInternal(Nperthread, zetaAncs, oldEves, as, lws,
-    scratch1, scratch2, nresamples, 0.0, 0.0, 0.0, maxlws,
-    partialSums, partialSumSqs, Ns, NsPartial, particleScratches, localAs,
-    localEves, localOldEves, localZetas, localZetaAncs, localWs, localLogWs,
-    localScratch1s, localAllAs, localAllZetas, localAllEves, localAllWs)
-
-end
-
 """
     SMCIO{Particle, ParticleScratch}(N::Int64, n::Int64, nthreads::Int64,
       fullOutput::Bool, essThreshold::Float64 = 2.0) where
@@ -229,7 +274,6 @@ Constructor for ```SMCIO``` structs.
 function SMCIO{Particle, ParticleScratch}(N::Int64, n::Int64, nthreads::Int64,
   fullOutput::Bool, essThreshold::Float64 = 2.0) where {Particle,
   ParticleScratch}
-  @assert mod(N, nthreads) == 0 "N must be a multiple of nthreads"
   @assert method_exists(Particle, ()) "Particle() must exist"
   @assert method_exists(ParticleScratch, ()) "ParticleScratch() must exist"
 
@@ -266,25 +310,18 @@ function SMCIO{Particle, ParticleScratch}(N::Int64, n::Int64, nthreads::Int64,
       allEves[i] = Vector{Int64}(uninitialized, N)
     end
   else
-    allZetas = Vector{Vector{Particle}}(0)
-    allWs = Vector{Vector{Float64}}(0)
-    allAs = Vector{Vector{Int64}}(0)
-    allEves = Vector{Vector{Int64}}(0)
+    allZetas = Vector{Vector{Particle}}(uninitialized, 0)
+    allWs = Vector{Vector{Float64}}(uninitialized, 0)
+    allAs = Vector{Vector{Int64}}(uninitialized, 0)
+    allEves = Vector{Vector{Int64}}(uninitialized, 0)
   end
 
-  internal::_SMCInternal = _SMCInternal{ParticleScratch}(N, n, nthreads,
-    fullOutput, zetas, eves, ws, allZetas, allWs, allAs, allEves)
+  internal::_SMCInternal = _SMCInternal{Particle, ParticleScratch}(N, n,
+    nthreads, fullOutput)
+
+  _assignThreadViews(internal, zetas, eves, ws, allZetas, allWs, allAs, allEves)
 
   return SMCIO(N, n, nthreads, zetas, eves, ws, logZhats, Vhat1s, esses,
     resample, fullOutput, essThreshold, internal, allZetas, allWs, allAs,
     allEves)
 end
-
-# """
-#     SMCIO{Particle}(N::Int64, n::Int64, nthreads::Int64, fullOutput::Bool, essThreshold::Float64 = 2.0) where Particle
-# Constructor for the SMCIO object when no ParticleScratch type is required
-# """
-# function SMCIO{Particle}(N::Int64, n::Int64, nthreads::Int64,
-#   fullOutput::Bool, essThreshold::Float64 = 2.0) where Particle
-#   return SMCIO{Particle, Void}(N, n, nthreads, fullOutput, essThreshold)
-# end

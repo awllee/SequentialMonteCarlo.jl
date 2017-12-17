@@ -63,7 +63,7 @@ end
   ws = smcio.ws
   as = smcio.internal.as
   engine = getSMCRNG()
-  pScratches = smcio.internal.particleScratches
+  pScratch = smcio.internal.particleScratch
   smcio.internal.nresamples = 0
 
   logZhats = smcio.logZhats
@@ -78,12 +78,12 @@ end
       _setEves!(smcio.eves, smcio.internal.oldEves, as)
     end
     if ref == nothing
-      _mutateParticles!(zetas, engine, p, model.M!, zetaAncs, pScratches[1])
+      _mutateParticles!(zetas, engine, p, model.M!, zetaAncs, pScratch)
     else
-      _mutateParticles!(zetas, engine, p, model.M!, zetaAncs, pScratches[1], ref[p])
+      _mutateParticles!(zetas, engine, p, model.M!, zetaAncs, pScratch, ref[p])
     end
 
-    _logWeightParticles!(lws, p, model.lG, zetas, pScratches[1],
+    _logWeightParticles!(lws, p, model.lG, zetas, pScratch,
       p == 1 || smcio.resample[p-1], ws)
 
     smcio.internal.maxlw = maximum(lws)
