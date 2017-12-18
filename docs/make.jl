@@ -15,9 +15,11 @@ makedocs(
     "Adaptive resampling" => "smcadaptive.md"
     "Conditional SMC" => "csmc.md"
     "Implementation notes" => "impl.md"
+    "Performance tips" => "performance.md"
     "SMC interface" => "smcinterface.md"
     "Types and functions" => "guide.md"
     "Hidden Markov models" => "hmm.md"
+    "Benchmarks" => "bench.md"
     "References" => "refs.md"
   ]
 )
