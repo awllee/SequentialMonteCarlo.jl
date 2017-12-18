@@ -10,6 +10,17 @@ This package provides a light interface to a serial and multi-threaded implement
 
 The [documentation](https://awllee.github.io/SequentialMonteCarlo.jl/latest) and some [examples](https://github.com/awllee/SMCExamples.jl) may be helpful for getting started.
 
+## Getting the package
+
+```julia
+Pkg.add("SequentialMonteCarlo")
+```
+
+If you want the latest version from the master branch, not just the latest release, you can additionally call
+```julia
+Pkg.checkout("SequentialMonteCarlo")
+```
+
 ## Quick start:
 
 ```julia
