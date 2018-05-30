@@ -1,3 +1,5 @@
+import NonUniformRandomVariateGeneration.sampleCategorical
+
 # basic routines used by both smcSerial and smcParallel
 
 # adapted from https://discourse.julialang.org/t/how-to-copy-all-fields-without-changing-the-referece/945/5
@@ -89,7 +91,7 @@ end
   allAs::Vector{Vector{Int64}} = smcio.allAs
   allZetas::Vector{Vector{Particle}} = smcio.allZetas
   rng::SMCRNG = getSMCRNG()
-  k::Int64 = sampleOne(smcio.ws, rng)
+  k::Int64 = sampleCategorical(smcio.ws, rng)
 
   @inbounds particleCopy!(path[n], allZetas[n][k])
   for p = n-1:-1:1

@@ -7,12 +7,13 @@ import SMCExamples.Lorenz96.defaultLorenzModel
 using Compat.Dates
 
 using BenchmarkTools, Compat
-import Hwloc
+# import Hwloc
 
 function benchMachineInfo()
   s::String = "$(Sys.MACHINE)\n" *
     "$(Sys.cpu_info()[1].model) ($(Sys.cpu_name)) ; " *
-    "$(Hwloc.num_physical_cores()) Physical, $(Sys.CPU_CORES) Logical\n" *
+    "$(Sys.CPU_CORES) Logical cores\n" *
+    # "$(Hwloc.num_physical_cores()) Physical, $(Sys.CPU_CORES) Logical\n" *
     "Julia $VERSION using $(Threads.nthreads()) threads"
   return s
 end

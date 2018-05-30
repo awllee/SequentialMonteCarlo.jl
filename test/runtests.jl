@@ -15,10 +15,6 @@ function testapproxequal(a::Float64, b::Float64, tol::Float64, verbose::Bool)
   @test v < tol
 end
 
-@testset "Multinomial sampling test" begin
-  @time include("multinomial_test.jl")
-end
-
 include("finiteFK_test.jl")
 
 @testset "LGModel tests" begin

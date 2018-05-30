@@ -1,3 +1,5 @@
+import NonUniformRandomVariateGeneration.sampleMultinomial!
+
 @inline function _iotaParallel!(array::Vector{Int64}, N::Int64, nthreads::Int64,
   Nperthread::Int64)
   Threads.@threads for i in 1:nthreads
