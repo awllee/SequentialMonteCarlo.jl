@@ -29,7 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Introduction",
     "category": "section",
-    "text": "Sequential Monte Carlo (SMC) algorithms are defined in terms of an initial distribution M_1, a sequence of Markov transition kernels M_2 ldots M_n and a sequence of non-negative potential functions G_1 ldots G_n.These in turn define a sequence of unnormalized distributions, or measures, specified in SMC Integrals. Integrals with respect to these measures are the principal quantities that an SMC algorithm provides approximations of.The purpose of this package is to provide a very light interface to an SMC implementation with good multi-threaded performance. The main computationally intensive tasks in an SMC algorithm involve simulating from M_1 ldots M_n and evaluating G_1 ldots G_n a very large number of times: this package allows users to write these functions in Julia, which is a relatively high-level language, with little to no cost to performance. This is certainly an improvement over the very obsolete code written for Lee et al. (2010), which had good performance on GPUs but was almost impossible to make generally usable. It hopefully complements Murray (2013)'s LibBi software, which is focused on Bayesian inference in the context of general state-space hidden Markov models, and which achieves genericity via the heavier interface of a custom modelling language and a high-performance back end."
+    "text": "Sequential Monte Carlo (SMC) algorithms are defined in terms of an initial distribution M_1, a sequence of Markov transition kernels M_2 ldots M_n and a sequence of non-negative potential functions G_1 ldots G_n.These in turn define a sequence of unnormalized distributions, or measures, specified in SMC Integrals. Integrals with respect to these measures are the principal quantities that an SMC algorithm provides approximations of.The purpose of this package is to provide a very light interface to an SMC implementation with good multi-threaded performance. The main computationally intensive tasks in an SMC algorithm involve simulating from M_1 ldots M_n and evaluating G_1 ldots G_n a very large number of times: this package allows users to write these functions in Julia, which is a relatively high-level language, with little to no cost to performance. This is certainly an improvement over the very obsolete code written for Lee et al. (2010), which had good performance on GPUs but was almost impossible to make generally usable. It hopefully complements Murray (2013)\'s LibBi software, which is focused on Bayesian inference in the context of general state-space hidden Markov models, and which achieves genericity via the heavier interface of a custom modelling language and a high-performance back end."
 },
 
 {
@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Which SMC algorithm?",
     "category": "section",
-    "text": "The basic algorithm presented and implemented here was proposed by Stewart & McCarty Jr (1992), Gordon et al. (1993) and Kitagawa (1993). It is known as SMC with multinomial resampling and also often referred to as a Particle Filter. There are other SMC algorithms, some of which may be implemented in the future. The SMC algorithm with multinomial resampling is theoretically very well understood, and has associated variance estimators that are by-products of running the algorithm itself.For readers interested in an SMC tutorial or methodological survey, two recent and complementary book chapters are Doucet & Johansen (2011) and Doucet & Lee (2018), which make some attempt at being comprehensive in various ways. The latter uses notation very similar to here, which is ultimately due to Pierre Del Moral. One minor notational difference here is the use of 1-indexing for sequences so as to be consistent with Julia's indexing. There are many other tutorials and surveys available.Web pages maintained by Arnaud Doucet and Pierre del Moral provide many important references to methodological, theoretical and applied work."
+    "text": "The basic algorithm presented and implemented here was proposed by Stewart & McCarty Jr (1992), Gordon et al. (1993) and Kitagawa (1993). It is known as SMC with multinomial resampling and also often referred to as a Particle Filter. There are other SMC algorithms, some of which may be implemented in the future. The SMC algorithm with multinomial resampling is theoretically very well understood, and has associated variance estimators that are by-products of running the algorithm itself.For readers interested in an SMC tutorial or methodological survey, two recent and complementary book chapters are Doucet & Johansen (2011) and Doucet & Lee (2018), which make some attempt at being comprehensive in various ways. The latter uses notation very similar to here, which is ultimately due to Pierre Del Moral. One minor notational difference here is the use of 1-indexing for sequences so as to be consistent with Julia\'s indexing. There are many other tutorials and surveys available.Web pages maintained by Arnaud Doucet and Pierre del Moral provide many important references to methodological, theoretical and applied work."
 },
 
 {
@@ -269,7 +269,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Implementation notes",
     "title": "Implementation notes",
     "category": "section",
-    "text": "The multi-threaded implementation of SMC is fairly straightforward. The attempt to efficiently utilize multiple cores is largely focused around using appropriate data structures and low-overhead resampling / selection, since the remaining steps are embarrassingly parallel.There is also some attention paid to Julia's threading interface and, for both parallel and serial execution, the need to avoid dynamic memory allocations by pre-allocating reusable memory. All code for the package was written using Julia's core and base functionality.Generating the ancestor indices in sorted order is accomplished primarily through use of the uniform spacings method for generating a sequence of sorted uniform random variates developed by Lurie & Hartley (1972) and described by Devroye (1986, p. 214). In multi-threaded code, the multinomial variate giving the number of ancestor indices each thread should simulate using a thread-specific subvector of particle weights is simulated by using a combination of inversion sampling and an implementation of the btrd algorithm of Hörmann (1993), which simulates binomially distributed variates in expected mathcalO(1) time. Simulating a multinomial random variate is accomplished by simulating a sequence of appropriate Binomial random variates. The code-generating function for copying particles was adapted from a suggestion on Julia Discourse by Greg Plowman.It is possible to use the counter-based RNGs in the RandomNumbers.jl package in place of the default random number generator; this was not working on the Julia-0.7 development branch at the time of development, and is slightly slower than the MersenneTwister RNG provided by Julia's base. In the future, allowing users to choose between the two, or to specify their own RNGs, would be useful."
+    "text": "The multi-threaded implementation of SMC is fairly straightforward. The attempt to efficiently utilize multiple cores is largely focused around using appropriate data structures and low-overhead resampling / selection, since the remaining steps are embarrassingly parallel.There is also some attention paid to Julia\'s threading interface and, for both parallel and serial execution, the need to avoid dynamic memory allocations by pre-allocating reusable memory. All code for the package was written using Julia\'s core and base functionality.Generating the ancestor indices in sorted order is accomplished primarily through use of the uniform spacings method for generating a sequence of sorted uniform random variates developed by Lurie & Hartley (1972) and described by Devroye (1986, p. 214). In multi-threaded code, the multinomial variate giving the number of ancestor indices each thread should simulate using a thread-specific subvector of particle weights is simulated by using a combination of inversion sampling and an implementation of the btrd algorithm of Hörmann (1993), which simulates binomially distributed variates in expected mathcalO(1) time. Simulating a multinomial random variate is accomplished by simulating a sequence of appropriate Binomial random variates. The code-generating function for copying particles was adapted from a suggestion on Julia Discourse by Greg Plowman.It is possible to use the counter-based RNGs in the RandomNumbers.jl package in place of the default random number generator; this was not working on the Julia-0.7 development branch at the time of development, and is slightly slower than the MersenneTwister RNG provided by Julia\'s base. In the future, allowing users to choose between the two, or to specify their own RNGs, would be useful."
 },
 
 {
@@ -309,7 +309,7 @@ var documenterSearchIndex = {"docs": [
     "page": "SMC interface",
     "title": "Specifying an SMC model",
     "category": "section",
-    "text": "We recall from the Introduction that the SMC algorithm is defined in terms of M_1 ldots M_n and G_1 ldots G_n.A model of type SMCModel can be created by callingmodel = SMCModel(M!, lG, maxn::Int64, Particle, ParticleScratch)where Particle and ParticleScratch are user-defined types, M! is a void function with argumentsM!(newParticle::Particle, rng::SMCRNG, p::Int64, particle::Particle,\n  scratch::ParticleScratch)and lG is a function returning a Float64 and has argumentslG(p::Int64, particle::Particle, scratch::ParticleScratch)There is a correspondence between the function M! and M_1 ldots M_n: calling M!(x', rng, p, x, scratch), should make x a realization of a sample from M_p(x cdot) with the convention that M_1(xcdot) = M_1(cdot) for any x. Similarly, lG and G_1 ldots G_n correspond in that lG(p,x) $ = \\log G_p(x)$. Logarithms are used to avoid numerical issues. maxn is the maximum value of n for which M! and lG are well-defined; users may choose to run the SMC algorithm for any integer value of n up to and including maxn.The types Particle and ParticleScratch must have constructors that take no arguments. One may choose ParticleScratch = Void, in which case nothing will be passed to M! and lG. Using scratch space is optional but can significantly improve performance in certain scenarios; it provides a mechanism for users to avoid dynamic memory allocations in M! and/or lG. This scratch space will be used by every particle associated with a given thread. A thread-specific pseudo-random number generator (RNG) rng will be passed to the M! function by the algorithm, and should be used in lieu of Julia's global RNG."
+    "text": "We recall from the Introduction that the SMC algorithm is defined in terms of M_1 ldots M_n and G_1 ldots G_n.A model of type SMCModel can be created by callingmodel = SMCModel(M!, lG, maxn::Int64, Particle, ParticleScratch)where Particle and ParticleScratch are user-defined types, M! is a void function with argumentsM!(newParticle::Particle, rng::SMCRNG, p::Int64, particle::Particle,\n  scratch::ParticleScratch)and lG is a function returning a Float64 and has argumentslG(p::Int64, particle::Particle, scratch::ParticleScratch)There is a correspondence between the function M! and M_1 ldots M_n: calling M!(x\', rng, p, x, scratch), should make x a realization of a sample from M_p(x cdot) with the convention that M_1(xcdot) = M_1(cdot) for any x. Similarly, lG and G_1 ldots G_n correspond in that lG(p,x) $ = \\log G_p(x)$. Logarithms are used to avoid numerical issues. maxn is the maximum value of n for which M! and lG are well-defined; users may choose to run the SMC algorithm for any integer value of n up to and including maxn.The types Particle and ParticleScratch must have constructors that take no arguments. One may choose ParticleScratch = Void, in which case nothing will be passed to M! and lG. Using scratch space is optional but can significantly improve performance in certain scenarios; it provides a mechanism for users to avoid dynamic memory allocations in M! and/or lG. This scratch space will be used by every particle associated with a given thread. A thread-specific pseudo-random number generator (RNG) rng will be passed to the M! function by the algorithm, and should be used in lieu of Julia\'s global RNG."
 },
 
 {
@@ -380,7 +380,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.SMCModel",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.SMCModel",
-    "category": "Type",
+    "category": "type",
     "text": "SMCModel(M!::F1, lG::F2, maxn::Int64, particle::Type, pScratch::Type) where\n  {F1<:Function,F2<:Function}\n\nM! Mutation function\nlG Log potential function\nmaxn Maximum n for which the model is well-defined\nparticle Type of a particle\npScratch Type of particle scratch space\n\n\n\n"
 },
 
@@ -388,7 +388,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.SMCIO",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.SMCIO",
-    "category": "Type",
+    "category": "type",
     "text": "SMCIO{Particle, ParticleScratch}\n\nStructs of this type should be constructed using the provided constructor. Important fields:\n\nN::Int64 Number of particles N\nn::Int64 Number of steps n\nnthreads::Int64 Number of threads\nfullOutput::Bool Whether particle system history should be recorded\nessThreshold::Float64 Relative ESS Threshold tau\nzetas::Vector{Particle} Time n particles zeta_n^1 ldots zeta_n^N\neves::Vector{Int64} Time n Eve indices E_n^1 ldots E_n^N\nws::Vector{Float64} Time n weights W_n^1 ldots W_n^N\nlogZhats::Vector{Float64} log(hatZ^N_1) ldots log(hatZ^N_n)\nVhat1s::Vector{Float64} hatV_1^N(1) ldots hatV_n^N(1)\nesses::Vector{Float64} Relative ESS values mathcalE_1^N ldots mathcalE_n^N\nresample::Vector{Bool} Resampling indicators R_1 ldots R_n-1\n\nPopulated only if fullOutput == true\n\nallZetas::Vector{Vector{Particle}} All the particles\nallWs::Vector{Vector{Float64}} All the weights\nallAs::Vector{Vector{Int64}} All the ancestor indices\nallEves::Vector{Vector{Int64}} All the Eve indices\n\n\n\n"
 },
 
@@ -404,7 +404,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.smc!-Tuple{SequentialMonteCarlo.SMCModel,SequentialMonteCarlo.SMCIO}",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.smc!",
-    "category": "Method",
+    "category": "method",
     "text": "smc!(model::SMCModel, smcio::SMCIO)\n\nRun the SMC algorithm for the given model and input/output arguments.\n\nIf smcio.nthreads == 1 the algorithm will run in serial.\n\n\n\n"
 },
 
@@ -412,7 +412,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.csmc!-Union{Tuple{Particle}, Tuple{SequentialMonteCarlo.SMCModel,SequentialMonteCarlo.SMCIO{Particle,ParticleScratch} where ParticleScratch,Array{Particle,1},Array{Particle,1}}} where Particle",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.csmc!",
-    "category": "Method",
+    "category": "method",
     "text": "csmc!(model::SMCModel, smcio::SMCIO, ref::Vector{Particle}, refout::Vector{Particle})\n\nRun the conditional SMC algorithm for the given model, input/output arguments, reference path and output path.\n\nIt is permitted for ref and refout to be the same. If smcio.nthreads == 1 the algorithm will run in serial.\n\n\n\n"
 },
 
@@ -420,7 +420,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.SMCIO-Union{Tuple{Int64,Int64,Int64,Bool,Float64}, Tuple{Int64,Int64,Int64,Bool}, Tuple{ParticleScratch}, Tuple{Particle}} where ParticleScratch where Particle",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.SMCIO",
-    "category": "Method",
+    "category": "method",
     "text": "SMCIO{Particle, ParticleScratch}(N::Int64, n::Int64, nthreads::Int64,\n  fullOutput::Bool, essThreshold::Float64 = 2.0) where\n  {Particle, ParticleScratch}\n\nConstructor for SMCIO structs.\n\n\n\n"
 },
 
@@ -428,7 +428,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.eta-Union{Tuple{F}, Tuple{Particle}, Tuple{SequentialMonteCarlo.SMCIO{Particle,ParticleScratch} where ParticleScratch,F,Bool,Int64}} where F<:Function where Particle",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.eta",
-    "category": "Method",
+    "category": "method",
     "text": "eta(smcio::SMCIO{Particle}, f::F, hat::Bool, p::Int64) where {Particle, F<:Function}\n\nCompute:\n\n!hat: eta^N_p(f)\nhat:  hateta_p^N(f)\n\n\n\n"
 },
 
@@ -436,7 +436,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.allEtas-Union{Tuple{F}, Tuple{SequentialMonteCarlo.SMCIO,F,Bool}} where F<:Function",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.allEtas",
-    "category": "Method",
+    "category": "method",
     "text": "allEtas(smcio::SMCIO, f::F, hat::Bool) where F<:Function\n\nCompute eta(smcio::SMCIO, f::F, hat::Bool, p) for p in {1, …, smcio.n}\n\n\n\n"
 },
 
@@ -444,7 +444,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.slgamma-Union{Tuple{F}, Tuple{SequentialMonteCarlo.SMCIO,F,Bool,Int64}} where F<:Function",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.slgamma",
-    "category": "Method",
+    "category": "method",
     "text": "slgamma(smcio::SMCIO, f::F, hat::Bool, p::Int64) where {Particle, F<:Function}\n\nCompute:\n\n!hat: (eta^N_p(f) geq 0 log gamma^N_p(f))\nhat:  (hateta^N_p(f) geq 0 log hatgamma_p^N(f))\n\nThe result is returned as a Tuple{Bool, Float64}: the first component represents whether the returned value is non-negative, the second is the logarithm of the absolute value of the approximation.\n\n\n\n"
 },
 
@@ -452,7 +452,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.allGammas-Union{Tuple{F}, Tuple{SequentialMonteCarlo.SMCIO,F,Bool}} where F<:Function",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.allGammas",
-    "category": "Method",
+    "category": "method",
     "text": "allGammas(smcio::SMCIO, f::F, hat::Bool) where F<:Function\n\nCompute slgamma(smcio::SMCIO, f::F, hat::Bool, p) for p in {1, …, smcio.n}\n\n\n\n"
 },
 
@@ -460,7 +460,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.V-Union{Tuple{F}, Tuple{Particle}, Tuple{SequentialMonteCarlo.SMCIO{Particle,ParticleScratch} where ParticleScratch,F,Bool,Bool,Int64}} where F<:Function where Particle",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.V",
-    "category": "Method",
+    "category": "method",
     "text": "V(smcio::SMCIO{Particle}, f::F, hat::Bool, centred::Bool, p::Int64) where\n  {Particle, F<:Function}\n\nCompute:\n\n!hat & !centred: V^N_p(f)\n!hat & centred: V^N_p(f-eta_p^N(f))\nhat & !centred: hatV_p^N(f)\nhat & centred:  hatV_p^N(f-hateta_p^N(f))\n\n\n\n"
 },
 
@@ -468,7 +468,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.vpns-Union{Tuple{F}, Tuple{SequentialMonteCarlo.SMCIO,F,Bool,Bool,Int64}} where F<:Function",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.vpns",
-    "category": "Method",
+    "category": "method",
     "text": "vpns(smcio::SMCIO, f::F, hat::Bool, centred::Bool, n::Int64) where F<:Function\n\nCompute a vector of the values of, for p = 1, …, n,\n\n!hat & !centred: v^N_pn(f)\n!hat & centred:  v^N_pn(f-eta_n^N(f))\nhat & !centred:  hatv_pn^N(f)\nhat & centred:   hatv_pn^N(f-hateta_n^N(f))\n\nNote: if essThreshold <= 1.0, and resampling did not occur at every time, the length of the output will be less than n.\n\n\n\n"
 },
 
@@ -476,7 +476,7 @@ var documenterSearchIndex = {"docs": [
     "location": "guide.html#SequentialMonteCarlo.v-Union{Tuple{F}, Tuple{SequentialMonteCarlo.SMCIO,F,Bool,Bool,Int64}} where F<:Function",
     "page": "Types and functions",
     "title": "SequentialMonteCarlo.v",
-    "category": "Method",
+    "category": "method",
     "text": "v(smcio::SMCIO, f::F, hat::Bool, centred::Bool, n::Int64) where F<:Function\n\nCompute:\n\n!hat & !centred: v^N_n(f)\n!hat & centred: v^N_n(f-eta_n^N(f))\nhat & !centred: hatv_n^N(f)\nhat & centred:  hatv_n^N(f-hateta_n^N(f))\n\n\n\n"
 },
 
@@ -501,7 +501,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Hidden Markov models",
     "title": "Connection to hidden Markov models",
     "category": "section",
-    "text": "Probably the most common use for SMC is in statistical applications involving hidden Markov models (HMMs), where the methodology originates. Indeed, there is a very simple correspondence between an HMM and an SMC model. The purpose of this part of the documentation is only to clarify how different SMC models can be associated with the same HMM.An simple HMM can be described as a bivariate Markov chain (X_1Y_1) ldots (X_n Y_n) as follows. X_1 ldots X_n is a Markov chain determined by an initial distribution mu and Markov transition densities f_2 ldots f_n. For each p in 1 ldots n, Y_p is conditionally independent of all other random variables given X_p and Y_p mid (X_p = x) has density g_p(x  cdot). Statistical inference for HMMs involve performing inference after observing (y_1 ldots y_n) as a realization of (Y_1 ldots Y_n).A standard use of SMC for such an HMM is as follows. Let the observations (y_1 ldots y_n) be given and choose M_1 = mu, M_p(x dx) = f_p(x x) dx for p in 2 ldots n and G_p(x) = g_p(x y_p) for p in 1 ldots n. Notice that the potential function G_p is defined using the observation y_p. Then it can be deduced that hatZ_p is the marginal likelihood associated with the first p observations, eta_p is the predictive distribution of X_p given the first p-1 observations and hateta_p is the filtering distribution of X_p given the first p observations. That is, \\[ X_p \\mid \\{(Y_0, \\ldots, Y_{p-1}) = (y_0, \\ldots, y_{p-1})\\} \\sim \\eta_p \\] and \\[ X_p \\mid \\{(Y_0, \\ldots, Y_{p}) = (y_0, \\ldots, y_{p})\\} \\sim \\hat{\\eta}_p. \\]However, this is only one way to map the HMM into an SMC Model. We extend the HMM's state space and define M_1(d(x_rm prev x)) = mu(dx) delta_x(dx_rm prev), and \\[ M_p((x_{\\rm prev},x), d(x_{\\rm prev}',x')) = q_p(x, x') \\delta_x(dx_{\\rm prev}'), \\qquad p \\in \\{2, \\ldots, n\\} \\] where q_p is such that q_p(x x)  0 whenever f_p(x x)  0. Then one can define \\[ G_p(x_{\\rm prev}, x) = \\frac{f_p(x_{\\rm prev}, x)}{q_p(x_{\\rm prev}, x)} g(x, y_p), \\qquad p \\in \\{1, \\ldots, n\\} \\] and it is still the case that hatZ_p is the marginal likelihood associated with the first p observations, eta_p is the predictive distribution of X_p given the first p-1 observations and hateta_p is the filtering distribution of X_p given the first p observations. An example of using different SMC models for a given HMM is provided in SMCExamples: comparison of Linear Gaussian models ; the model associated with the \"locally optimal proposal\" is defined here."
+    "text": "Probably the most common use for SMC is in statistical applications involving hidden Markov models (HMMs), where the methodology originates. Indeed, there is a very simple correspondence between an HMM and an SMC model. The purpose of this part of the documentation is only to clarify how different SMC models can be associated with the same HMM.An simple HMM can be described as a bivariate Markov chain (X_1Y_1) ldots (X_n Y_n) as follows. X_1 ldots X_n is a Markov chain determined by an initial distribution mu and Markov transition densities f_2 ldots f_n. For each p in 1 ldots n, Y_p is conditionally independent of all other random variables given X_p and Y_p mid (X_p = x) has density g_p(x  cdot). Statistical inference for HMMs involve performing inference after observing (y_1 ldots y_n) as a realization of (Y_1 ldots Y_n).A standard use of SMC for such an HMM is as follows. Let the observations (y_1 ldots y_n) be given and choose M_1 = mu, M_p(x dx) = f_p(x x) dx for p in 2 ldots n and G_p(x) = g_p(x y_p) for p in 1 ldots n. Notice that the potential function G_p is defined using the observation y_p. Then it can be deduced that hatZ_p is the marginal likelihood associated with the first p observations, eta_p is the predictive distribution of X_p given the first p-1 observations and hateta_p is the filtering distribution of X_p given the first p observations. That is, \\[ X_p \\mid \\{(Y_0, \\ldots, Y_{p-1}) = (y_0, \\ldots, y_{p-1})\\} \\sim \\eta_p \\] and \\[ X_p \\mid \\{(Y_0, \\ldots, Y_{p}) = (y_0, \\ldots, y_{p})\\} \\sim \\hat{\\eta}_p. \\]However, this is only one way to map the HMM into an SMC Model. We extend the HMM\'s state space and define M_1(d(x_rm prev x)) = mu(dx) delta_x(dx_rm prev), and \\[ M_p((x_{\\rm prev},x), d(x_{\\rm prev}\',x\')) = q_p(x, x\') \\delta_x(dx_{\\rm prev}\'), \\qquad p \\in \\{2, \\ldots, n\\} \\] where q_p is such that q_p(x x)  0 whenever f_p(x x)  0. Then one can define \\[ G_p(x_{\\rm prev}, x) = \\frac{f_p(x_{\\rm prev}, x)}{q_p(x_{\\rm prev}, x)} g(x, y_p), \\qquad p \\in \\{1, \\ldots, n\\} \\] and it is still the case that hatZ_p is the marginal likelihood associated with the first p observations, eta_p is the predictive distribution of X_p given the first p-1 observations and hateta_p is the filtering distribution of X_p given the first p observations. An example of using different SMC models for a given HMM is provided in SMCExamples: comparison of Linear Gaussian models ; the model associated with the \"locally optimal proposal\" is defined here."
 },
 
 {
@@ -525,7 +525,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Benchmarks",
     "title": "Procedure",
     "category": "section",
-    "text": "These are obtained by running the bench.sh script in the test/ directory, e.g.sh bench.sh 1 2 8 16 | tee benchOutput.txtThe benchmarks just involve a small selection of models, whose mutation and potential functions involve different amounts of arithmetic intensity and dimension of the particles. Clearly, it would be beneficial if the SMC community could agree on a suitable set of benchmarks to cover a wide variety of uses of SMC.The processor information is obtained using Hwloc, which may not always be reliable. For example, the X5675 has 6 physical and 12 logical cores, which differs from the output below.In the case of the E5-2667 v3 only, there is an issue with that particular machine's time stamp counter (TSC), which very adversely affects Julia's multi-threading, due to repeated system calls to obtain the time. For this reason, Julia was recompiled for this particular benchmark to disable thread profiling (this is a single preprocessor definition) and it was also run with JULIA_THREAD_SLEEP_THRESHOLD=0, which essentially eliminates time checks to send threads to sleep.More benchmark results should eventually follow and contributions are welcome, please email them to Anthony Lee."
+    "text": "These are obtained by running the bench.sh script in the test/ directory, e.g.sh bench.sh 1 2 8 16 | tee benchOutput.txtThe benchmarks just involve a small selection of models, whose mutation and potential functions involve different amounts of arithmetic intensity and dimension of the particles. Clearly, it would be beneficial if the SMC community could agree on a suitable set of benchmarks to cover a wide variety of uses of SMC.The processor information is obtained using Hwloc, which may not always be reliable. For example, the X5675 has 6 physical and 12 logical cores, which differs from the output below.In the case of the E5-2667 v3 only, there is an issue with that particular machine\'s time stamp counter (TSC), which very adversely affects Julia\'s multi-threading, due to repeated system calls to obtain the time. For this reason, Julia was recompiled for this particular benchmark to disable thread profiling (this is a single preprocessor definition) and it was also run with JULIA_THREAD_SLEEP_THRESHOLD=0, which essentially eliminates time checks to send threads to sleep.More benchmark results should eventually follow and contributions are welcome, please email them to Anthony Lee."
 },
 
 {
