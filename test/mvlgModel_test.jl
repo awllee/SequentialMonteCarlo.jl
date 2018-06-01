@@ -22,16 +22,16 @@ function testmvlgcsmc(nthreads::Int64, essThreshold::Float64)
   model, theta, ys, ko = MVLinearGaussian.defaultMVLGModel(2, 10)
   nsamples = 2^12
 
-  smcio = SMCIO{model.particle, model.pScratch}(256, model.maxn, 4, true,
+  smcio = SMCIO{model.particle, model.pScratch}(256, model.maxn, nthreads, true,
     essThreshold)
 
-  v = Vector{MVFloat64Particle{2}}(10)
+  v = Vector{MVFloat64Particle{2}}(undef, 10)
   for p = 1:10
     v[p] = MVFloat64Particle{2}()
     v[p].x .= zeros(MVector{2, Float64})
   end
 
-  meanEstimates = Vector{MVector{2,Float64}}(10)
+  meanEstimates = Vector{MVector{2,Float64}}(undef, 10)
   for p = 1:10
     meanEstimates[p] = zeros(MVector{2, Float64})
   end
@@ -56,5 +56,6 @@ mvlgtest(2, Threads.nthreads())
 
 testmvlgcsmc(1, 2.0)
 testmvlgcsmc(1, 0.5)
-testmvlgcsmc(Threads.nthreads(), 2.0)
-testmvlgcsmc(Threads.nthreads(), 0.5)
+nt = min(Threads.nthreads(), 4)
+testmvlgcsmc(nt, 2.0)
+testmvlgcsmc(nt, 0.5)
