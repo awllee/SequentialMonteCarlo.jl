@@ -1,5 +1,5 @@
 using Compat.Test
-import Compat.uninitialized
+import Compat.undef
 
 function testapproxequal(a::Vector{Float64}, b::Vector{Float64}, tol::Float64,
   verbose::Bool)

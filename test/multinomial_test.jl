@@ -13,7 +13,7 @@ function multinomial_test()
   m = 2^18
   array = zeros(Float64, 3)
   array2 = zeros(Float64, 3)
-  result = Vector{Int64}(uninitialized, 3)
+  result = Vector{Int64}(undef, 3)
   E = n*p
   V = n*p.*(1.0 .- p)
 

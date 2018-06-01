@@ -1,3 +1,5 @@
+import Compat.Nothing
+
 @inline function _iota!(array::Vector{Int64})
   for i in eachindex(array)
     @inbounds array[i] = i
@@ -55,8 +57,8 @@ end
 
 # Serial implementation of SMC and cSMC
 @inline function _smcSerial!(model::SMCModel, smcio::SMCIO{Particle},
-  ref::Union{Void, Vector{Particle}} = nothing,
-  refout::Union{Void, Vector{Particle}} = nothing) where Particle
+  ref::Union{Nothing, Vector{Particle}} = nothing,
+  refout::Union{Nothing, Vector{Particle}} = nothing) where Particle
   zetas = smcio.zetas
   zetaAncs = smcio.internal.zetaAncs
   lws = smcio.internal.lws

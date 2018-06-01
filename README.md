@@ -27,6 +27,7 @@ Pkg.checkout("SequentialMonteCarlo")
 ## Load the package
 
 using SequentialMonteCarlo
+import Compat.Nothing
 
 ## Define a particle consisting of one Float64
 
@@ -39,7 +40,7 @@ end
 ## define a non-stationary Markov chain, since 1.5 > 1.
 
 function M!(newParticle::Float64Particle, rng::SMCRNG, p::Int64,
-  particle::Float64Particle, ::Void)
+  particle::Float64Particle, ::Nothing)
   if p == 1
     newParticle.x = randn(rng)
   else
@@ -50,7 +51,7 @@ end
 ## The log potential function is x -> -x^2 so the potential function is
 ## x -> exp(-x^2).
 
-function lG(p::Int64, particle::Float64Particle, ::Void)
+function lG(p::Int64, particle::Float64Particle, ::Nothing)
   return - particle.x * particle.x
 end
 
@@ -61,10 +62,10 @@ end
 
 ## Specify the model using M! and lG, stating that the maximum
 ## length of the model is 100, and specifying the types of the particle and
-## particle scratch space. The latter is Void in this case as no scratch space
+## particle scratch space. The latter is Nothing in this case as no scratch space
 ## is required.
 
-model = SMCModel(M!, lG, 100, Float64Particle, Void)
+model = SMCModel(M!, lG, 100, Float64Particle, Nothing)
 
 ## Create the SMC input/output struct, specifying the number of particles N as
 ## 2^20 = 1048576, that the algorithm should be run for 10 steps, that 1 thread

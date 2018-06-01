@@ -1,3 +1,5 @@
+import Compat.copyto!
+
 """
     smc!(model::SMCModel, smcio::SMCIO)
 Run the SMC algorithm for the given model and input/output arguments.
@@ -79,7 +81,7 @@ Compute ```eta(smcio::SMCIO, f::F, hat::Bool, p)``` for p in {1, …, smcio.n}
 """
 function allEtas(smcio::SMCIO, f::F, hat::Bool) where F<:Function
   T = typeof(f(smcio.zetas[1]) / smcio.N)
-  result::Vector{T} = Vector{T}(uninitialized, smcio.n)
+  result::Vector{T} = Vector{T}(undef, smcio.n)
   for p = 1:smcio.n
     @inbounds result[p] = eta(smcio, f, hat, p)
   end
@@ -112,7 +114,8 @@ end
 Compute ```slgamma(smcio::SMCIO, f::F, hat::Bool, p)``` for p in {1, …, smcio.n}
 """
 function allGammas(smcio::SMCIO, f::F, hat::Bool) where F<:Function
-  result::Vector{Tuple{Bool,Float64}} = Vector{Tuple{Bool,Float64}}(smcio.n)
+  result::Vector{Tuple{Bool, Float64}} =
+    Vector{Tuple{Bool, Float64}}(undef, smcio.n)
   for p = 1:smcio.n
     @inbounds result[p] = slgamma(smcio, f, hat, p)
   end
@@ -234,7 +237,7 @@ function vpns(smcio::SMCIO, f::F, hat::Bool, centred::Bool,
     end
   end
 
-  result = Vector{Float64}(n)
+  result = Vector{Float64}(undef, n)
   factor0::Float64 = (N/(N-1))^n
   factor1::Float64 = (N-1)*factor0
   vp::Float64 = 0.0
@@ -266,7 +269,7 @@ function vpns(smcio::SMCIO, f::F, hat::Bool, centred::Bool,
       @inbounds vp += (R1*R1 - R2) * (1.0 - Glocal[eves[p][a]])
     end
     @inbounds result[p] = factor1 * vp
-    copy!(Stmp, Slocal)
+    copyto!(Stmp, Slocal)
     fill!(Slocal, 0.0)
     for i = 1:N
       @inbounds Slocal[as[p][i]] += Stmp[i]
@@ -280,7 +283,7 @@ function vpns(smcio::SMCIO, f::F, hat::Bool, centred::Bool,
   mstar::Float64 = factor0 * (etafSq - vp)
   result .-= mstar
 
-  actualResult = Vector{Float64}(sum(smcio.resample[1:n-1]) + 1)
+  actualResult = Vector{Float64}(undef, sum(smcio.resample[1:n-1]) + 1)
   j::Int64 = 0
   for i = 1:length(actualResult)-1
     j += 1

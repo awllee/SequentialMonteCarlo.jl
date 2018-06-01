@@ -168,7 +168,7 @@ end
 function _getFreqs(model::SMCModel, smcio::SMCIO, m::Int64, d::Int64)
   v::Vector{Int64Particle} = FiniteFeynmanKac.Int642Path(1, d, smcio.n)
   counts = zeros(Int64, d^smcio.n)
-  result = Vector{Float64}(d^smcio.n)
+  result = Vector{Float64}(undef, d^smcio.n)
   for i = 1:m
     csmc!(model, smcio, v, v)
     counts[FiniteFeynmanKac.Path2Int64(v, d)] += 1
@@ -183,7 +183,7 @@ function testcsmc(nthreads::Int64, essThreshold::Float64)
   ffk = FiniteFeynmanKac.randomFiniteFK(d, n)
 
   model = FiniteFeynmanKac.makeSMCModel(ffk)
-  densities = Vector{Float64}(d^n)
+  densities = Vector{Float64}(undef, d^n)
   for i = 1:length(densities)
     densities[i] = FiniteFeynmanKac.fullDensity(ffk, FiniteFeynmanKac.Int642Path(i, d, n))
   end

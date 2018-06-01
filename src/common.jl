@@ -1,4 +1,5 @@
 import NonUniformRandomVariateGeneration.sampleCategorical
+import Compat: hasmethod, copyto!
 
 # basic routines used by both smcSerial and smcParallel
 
@@ -7,15 +8,15 @@ import NonUniformRandomVariateGeneration.sampleCategorical
   fieldNames = fieldnames(dest)
   fieldTypes = dest.types
   numFields = length(fieldNames)
-  expressions = Array{Expr}(uninitialized, numFields)
+  expressions = Array{Expr}(undef, numFields)
 
   for i = 1:numFields
     fieldName = fieldNames[i]
     fieldType = fieldTypes[i]
-    @assert !fieldType.mutable || method_exists(Base.copy!, (fieldType,
-      fieldType)) "$fieldName::$fieldType : Base.copy! must exist for mutable Particle fields"
+    @assert !fieldType.mutable || hasmethod(copyto!, (fieldType,
+      fieldType)) "$fieldName::$fieldType : copyto! must exist for mutable Particle fields"
     if fieldType.mutable
-      @inbounds expressions[i] = :(Base.copy!(dest.$fieldName, src.$fieldName))
+      @inbounds expressions[i] = :(copyto!(dest.$fieldName, src.$fieldName))
     else
       @inbounds expressions[i] = :(dest.$fieldName = src.$fieldName)
     end

@@ -63,7 +63,7 @@ end
 
 @inline function _MutateWeight!(p::Int64, model::SMCModel,
   smcio::SMCIO{Particle, ParticleScratch},
-  ref::Union{Void, Particle} = nothing) where {Particle, ParticleScratch}
+  ref::Union{Nothing, Particle} = nothing) where {Particle, ParticleScratch}
   Threads.@threads for i = 1:smcio.nthreads
     ip::_SMCInternalParallel{Particle, ParticleScratch} = smcio.internal.parallel
     @inbounds localZetas::SubVector{Particle} = ip.localZetas[i]
@@ -197,8 +197,8 @@ end
 
 # Parallel implementation of SMC
 @inline function _smcParallel!(model::SMCModel, smcio::SMCIO{Particle},
-  ref::Union{Void, Vector{Particle}} = nothing,
-  refout::Union{Void, Vector{Particle}} = nothing) where Particle
+  ref::Union{Nothing, Vector{Particle}} = nothing,
+  refout::Union{Nothing, Vector{Particle}} = nothing) where Particle
   smcio.internal.nresamples = 0
   lZ::Float64 = 0.0
   _iotaParallel!(smcio.eves, smcio.N, smcio.nthreads,

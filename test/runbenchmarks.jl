@@ -11,6 +11,8 @@ using BenchmarkTools, Compat
 
 function benchMachineInfo()
   s::String = "$(Sys.MACHINE)\n" *
+  ## renamed in 0.7
+  # "$(Sys.cpu_info()[1].model) ($(Sys.CPU_NAME)) ; " *
     "$(Sys.cpu_info()[1].model) ($(Sys.cpu_name)) ; " *
     "$(Sys.CPU_CORES) Logical cores\n" *
     # "$(Hwloc.num_physical_cores()) Physical, $(Sys.CPU_CORES) Logical\n" *

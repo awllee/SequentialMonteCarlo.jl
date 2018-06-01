@@ -2,7 +2,7 @@ __precompile__()
 
 module SequentialMonteCarlo
 
-import Compat.uninitialized
+import Compat.undef
 
 include("smcrng.jl")
 include("structures.jl")
