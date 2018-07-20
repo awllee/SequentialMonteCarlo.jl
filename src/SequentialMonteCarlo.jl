@@ -3,6 +3,7 @@ __precompile__()
 module SequentialMonteCarlo
 
 import Compat.undef
+import Compat.Statistics.mean
 
 include("smcrng.jl")
 include("structures.jl")
