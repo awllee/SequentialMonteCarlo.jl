@@ -42,11 +42,18 @@ end
 
 @inline function _getWs(smcio::SMCIO, hat::Bool, p::Int64)
   @assert 1 <= p <= smcio.n
-  p == smcio.n && return smcio.ws
-  !hat && (p == 1 || smcio.resample[p-1] == true) && return smcio.ws
-  @assert smcio.fullOutput "full SMC output required for this operation"
-  !hat && p > 1 && !smcio.resample[p-1] && return smcio.allWs[p-1]
-  return smcio.allWs[p]
+  if hat
+    p == smcio.n && return smcio.ws
+    @assert smcio.fullOutput "full SMC output required for this operation"
+    return smcio.allWs[p]
+  else
+    if p == 1 || smcio.resample[p-1] == true
+      return smcio.internal.vecOnes
+    else
+      @assert smcio.fullOutput "full SMC output required for this operation"
+      return smcio.allWs[p-1]
+    end
+  end
 end
 
 """
@@ -60,16 +67,9 @@ function eta(smcio::SMCIO{Particle}, f::F, hat::Bool, p::Int64) where
   {Particle, F<:Function}
   zetas::Vector{Particle} = _getZetas(smcio, hat, p)
   ws::Vector{Float64} = _getWs(smcio, hat, p)
-  if hat || (p > 1 && !smcio.resample[p-1])
-    v = f(zetas[1]) * ws[1]
-    for i = 2:smcio.N
-      @inbounds v += f(zetas[i]) * ws[i]
-    end
-  else
-    v = f(zetas[1])
-    for i = 2:smcio.N
-      @inbounds v += f(zetas[i])
-    end
+  v = f(zetas[1]) * ws[1]
+  for i = 2:smcio.N
+    @inbounds v += f(zetas[i]) * ws[i]
   end
   return v / smcio.N
 end
@@ -142,6 +142,9 @@ Compute:
 """
 function V(smcio::SMCIO{Particle}, f::F, hat::Bool, centred::Bool,
   p::Int64) where {Particle, F<:Function}
+
+  centred && return V(smcio, _centreFunction(smcio, f, hat, p), hat, false, p)
+
   zetas::Vector{Particle} = _getZetas(smcio, hat, p)
   ws::Vector{Float64} = _getWs(smcio, hat, p)
   if p == smcio.n
@@ -150,34 +153,19 @@ function V(smcio::SMCIO{Particle}, f::F, hat::Bool, centred::Bool,
     eves = smcio.allEves[p]
   end
 
-  centred && return V(smcio, _centreFunction(smcio, f, hat, p), hat, false, p)
-
   etafSq = eta(smcio, f, hat, p)^2
   N::Int64 = smcio.N
   i::Int64 = 1
   v::Float64 = 0.0
-  if hat || (p > 1 && !smcio.resample[p-1])
-    while i <= N
-      @inbounds e = eves[i]
-      tmp::Float64 = 0.0
-      @inbounds while i <= N && eves[i] == e
-        @inbounds tmp += ws[i] * f(zetas[i])
-        i += 1
-      end
-      tmp /= N
-      v += tmp*tmp
+  while i <= N
+    @inbounds e = eves[i]
+    tmp::Float64 = 0.0
+    @inbounds while i <= N && eves[i] == e
+      @inbounds tmp += ws[i] * f(zetas[i])
+      i += 1
     end
-  else
-    while i <= N
-      @inbounds e = eves[i]
-      tmp::Float64 = 0.0
-      @inbounds while (i <= N && eves[i] == e)
-        @inbounds tmp += f(zetas[i])
-        i += 1
-      end
-      tmp /= N
-      v += tmp*tmp
-    end
+    tmp /= N
+    v += tmp*tmp
   end
   q::Int64 = 1
   for i = 1:p-1

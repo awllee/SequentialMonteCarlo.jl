@@ -140,6 +140,7 @@ mutable struct _SMCInternal{Particle, ParticleScratch}
   lws::Vector{Float64}
   scratch1::Vector{Float64}
   scratch2::Vector{Float64}
+  vecOnes::Vector{Float64}
   nresamples::Int64
 
   sws::Float64
@@ -159,9 +160,10 @@ function _SMCInternal{Particle, ParticleScratch}(N::Int64, n::Int64,
   fill!(as, 1)
   scratch1 = Vector{Float64}(undef, N)
   scratch2 = Vector{Float64}(undef, N)
+  vecOnes = ones(N)
   nresamples::Int64 = 0
   zetaAncs = Vector{Particle}(undef, N)
-  for i=1:N
+  for i in 1:N
     zetaAncs[i] = Particle()
   end
   oldEves = Vector{Int64}(undef, N)
@@ -173,8 +175,8 @@ function _SMCInternal{Particle, ParticleScratch}(N::Int64, n::Int64,
   parallel::_SMCInternalParallel{Particle, ParticleScratch} =
     _SMCInternalParallel{Particle, ParticleScratch}(N, n, nthreads, fullOutput)
 
-  return _SMCInternal(zetaAncs, oldEves, as, lws, scratch1,
-    scratch2, nresamples, 0.0, 0.0, 0.0, particleScratch, parallel)
+  return _SMCInternal(zetaAncs, oldEves, as, lws, scratch1, scratch2, vecOnes,
+    nresamples, 0.0, 0.0, 0.0, particleScratch, parallel)
 end
 
 function _assignThreadViews(internal::_SMCInternal{Particle},
