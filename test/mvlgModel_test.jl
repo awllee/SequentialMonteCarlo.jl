@@ -45,9 +45,9 @@ function testmvlgcsmc(nthreads::Int64, essThreshold::Float64)
   meanEstimates ./= nsamples
 
   testapproxequal((x -> x[1]).(meanEstimates), (x -> x[1]).(ko.smoothingMeans),
-    0.05, false)
+    0.1, false)
   testapproxequal((x -> x[2]).(meanEstimates), (x -> x[2]).(ko.smoothingMeans),
-    0.05, false)
+    0.1, false)
 end
 
 mvlgtest(1, 1)

@@ -9,16 +9,24 @@ using Compat.Dates
 using BenchmarkTools, Compat
 # import Hwloc
 
-function benchMachineInfo()
-  s::String = "$(Sys.MACHINE)\n" *
-  ## renamed in 0.7
-  # "$(Sys.cpu_info()[1].model) ($(Sys.CPU_NAME)) ; " *
-    "$(Sys.cpu_info()[1].model) ($(Sys.cpu_name)) ; " *
-    "$(Sys.CPU_CORES) Logical cores\n" *
-    # "$(Hwloc.num_physical_cores()) Physical, $(Sys.CPU_CORES) Logical\n" *
-    "Julia $VERSION using $(Threads.nthreads()) threads"
-  return s
+if VERSION.minor < 7
+  function benchMachineInfo()
+    s::String = "$(Sys.MACHINE)\n" *
+      "$(Sys.cpu_info()[1].model) ($(Sys.cpu_name)) ; " *
+      "$(Sys.CPU_CORES) Logical cores\n" *
+      "Julia $VERSION using $(Threads.nthreads()) threads"
+    return s
+  end
+else
+  function benchMachineInfo()
+    s::String = "$(Sys.MACHINE)\n" *
+    "$(Sys.cpu_info()[1].model) ($(Sys.CPU_NAME)) ; " *
+      "$(Sys.CPU_THREADS) Logical cores\n" *
+      "Julia $VERSION using $(Threads.nthreads()) threads"
+    return s
+  end
 end
+
 
 function dateandtime()
   datetimenow = now()
@@ -35,7 +43,7 @@ function bench(model, range)
   nt = Threads.nthreads()
   println("log₂N  Benchmark")
   for k in range
-    print("$(lpad(k,2,0))   ")
+    print("$(lpad(string(k),2,string(0)))   ")
     N::Int64 = closestN(2^k, nt)
     smcio = SMCIO{model.particle, model.pScratch}(N, model.maxn, nt, false)
     @btime smc!($model, $smcio)

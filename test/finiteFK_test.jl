@@ -72,7 +72,7 @@ function _testV(smcio, ffkout, ffk, f, p, tol, verbose::Bool)
 end
 
 function testV(smcio, ffkout, ffk, verbose::Bool)
-  tol::Float64 = 0.25
+  tol::Float64 = 0.3
   _testV(smcio, ffkout, ffk, One, smcio.n, tol, verbose)
   for p = 1:smcio.n
     _testV(smcio, ffkout, ffk, Id, p, tol, verbose)
@@ -96,7 +96,7 @@ function _testv(smcio, ffkout, ffk, f, p, tol, verbose::Bool)
 end
 
 function testv(smcio, ffkout, ffk, verbose::Bool)
-  tol::Float64 = 0.25
+  tol::Float64 = 0.3
   _testv(smcio, ffkout, ffk, One, smcio.n, tol, verbose)
   for p = 1:smcio.n
     _testv(smcio, ffkout, ffk, Id, p, tol, verbose)
@@ -120,7 +120,7 @@ function _testvpn(smcio, ffkout, ffk, f, p, tol, verbose::Bool)
 end
 
 function testvpn(smcio, ffkout, ffk, verbose::Bool)
-  tol::Float64 = 0.2
+  tol::Float64 = 0.3
   _testvpn(smcio, ffkout, ffk, One, smcio.n, tol, verbose)
   for p = 1:smcio.n
     _testvpn(smcio, ffkout, ffk, Id, p, tol, verbose)
