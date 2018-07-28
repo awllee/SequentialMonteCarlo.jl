@@ -1,8 +1,9 @@
 using SequentialMonteCarlo
+using RNGPool
 using SMCExamples.LinearGaussian
 using Compat.Test
 
-setSMCRNGs(0)
+setRNGs(0)
 
 model, theta, ys, ko = LinearGaussian.defaultLGModel(5)
 

@@ -1,4 +1,5 @@
 using SequentialMonteCarlo
+using RNGPool
 using SMCExamples.FiniteFeynmanKac
 import SMCExamples.Particles.Int64Particle
 using Compat.Test
@@ -71,7 +72,6 @@ function _testV(smcio, ffkout, ffk, f, p, tol, verbose::Bool)
 end
 
 function testV(smcio, ffkout, ffk, verbose::Bool)
-  # verbose = true
   tol::Float64 = 0.25
   _testV(smcio, ffkout, ffk, One, smcio.n, tol, verbose)
   for p = 1:smcio.n
@@ -132,7 +132,7 @@ function testFullOutput(ffk::FiniteFeynmanKac.FiniteFK, nthreads::Int64,
   ffkout = FiniteFeynmanKac.calculateEtasZs(ffk)
   model = FiniteFeynmanKac.makeSMCModel(ffk)
   n = model.maxn
-  smcio = SMCIO{model.particle, model.pScratch}(2^20, n, nthreads, true,
+  smcio = SMCIO{model.particle, model.pScratch}(2^22, n, nthreads, true,
     essThreshold)
   smc!(model, smcio)
 
@@ -198,7 +198,7 @@ function testcsmc(nthreads::Int64, essThreshold::Float64)
   testapproxequal(freqs, densities, 0.05, false)
 end
 
-setSMCRNGs(0)
+setRNGs(0)
 
 verbose = false
 

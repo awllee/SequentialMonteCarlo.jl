@@ -2,7 +2,7 @@ import NonUniformRandomVariateGeneration.sampleSortedUniforms!
 
 # sample nans categorical r.v.s where Pr(X=i+offset) ∝ p[i]
 # required: length(Fs) = length(p), unifs[start+1:start+nans] are valid
-@inline function sampleSerial!(vs::Vector{Int64}, rng::SMCRNG, p::V,
+@inline function sampleSerial!(vs::Vector{Int64}, rng::RNG, p::V,
   nans::Int64, unifs::Vector{Float64}, Fs::V, start::Int64 = 0,
   offset::Int64 = 0) where V<:AbstractVector{Float64}
   # generateSortedUniformsBSerial!(unifs, start, nans, rng)

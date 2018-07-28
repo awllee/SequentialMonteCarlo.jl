@@ -39,7 +39,7 @@ end
 ## The initial distribution is a standard normal, and the Markov transitions
 ## define a non-stationary Markov chain, since 1.5 > 1.
 
-function M!(newParticle::Float64Particle, rng::SMCRNG, p::Int64,
+function M!(newParticle::Float64Particle, rng::RNG, p::Int64,
   particle::Float64Particle, ::Nothing)
   if p == 1
     newParticle.x = randn(rng)

@@ -8,15 +8,16 @@ A ```model``` of type ```SMCModel``` can be created by calling
 ```
 model = SMCModel(M!, lG, maxn::Int64, Particle, ParticleScratch)
 ```
-where ```Particle``` and ```ParticleScratch``` are user-defined types, ```M!``` is a void function with arguments
+where ```Particle``` and ```ParticleScratch``` are user-defined types, ```M!``` is a void function
 ```
-M!(newParticle::Particle, rng::SMCRNG, p::Int64, particle::Particle,
+M!(newParticle::Particle, rng::RNG, p::Int64, particle::Particle,
   scratch::ParticleScratch)
 ```
-and ```lG``` is a function returning a ```Float64``` and has arguments
+and ```lG``` is a function returning a ```Float64```
 ```
 lG(p::Int64, particle::Particle, scratch::ParticleScratch)
 ```
+The ```RNG``` type is defined by the [RNGPool](https://github.com/awllee/RNGPool.jl) package.
 
 There is a correspondence between the function ```M!``` and $M_1, \ldots, M_n$: calling ```M!(x', rng, p, x, scratch)```, should make $x'$ a realization of a sample from $M_p(x, \cdot)$ with the convention that $M_1(x,\cdot) = M_1(\cdot)$ for any $x$. Similarly, ```lG``` and $G_1, \ldots, G_n$ correspond in that ```lG(p,x)``` $ = \log G_p(x)$. Logarithms are used to avoid numerical issues. ```maxn``` is the maximum value of ```n``` for which ```M!``` and ```lG``` are well-defined; users may choose to run the SMC algorithm for any integer value of ```n``` up to and including ```maxn```.
 
