@@ -15,10 +15,4 @@ include("interface.jl")
 
 export smc!, csmc!, SMCModel, SMCIO
 
-# temporary
-SMCRNG = RNG
-getSMCRNG = getRNG
-setSMCRNGs = setRNGs
-export SMCRNG, getSMCRNG, setSMCRNGs
-
 end # module
