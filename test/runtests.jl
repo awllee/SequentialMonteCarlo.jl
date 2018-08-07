@@ -21,9 +21,7 @@ include("finiteFK_test.jl")
   @time include("lgModel_test.jl")
 end
 
-@testset "MVLGModel tests" begin
-  @time include("mvlgModel_test.jl")
-end
+include("mvlgModel_test.jl")
 
 @testset "SMC Sampler tests" begin
   @time include("smcSampler_test.jl")

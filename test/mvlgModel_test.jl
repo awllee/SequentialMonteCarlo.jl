@@ -50,13 +50,20 @@ function testmvlgcsmc(nthreads::Int64, essThreshold::Float64)
     0.1, false)
 end
 
-mvlgtest(1, 1)
-mvlgtest(1, Threads.nthreads())
-mvlgtest(2, 1)
-mvlgtest(2, Threads.nthreads())
+@time @testset "MV Linear Gaussian: SMC" begin
+  mvlgtest(1, 1)
+  mvlgtest(1, Threads.nthreads())
+  mvlgtest(2, 1)
+  mvlgtest(2, Threads.nthreads())
+end
 
-testmvlgcsmc(1, 2.0)
-testmvlgcsmc(1, 0.5)
-nt = min(Threads.nthreads(), 4)
-testmvlgcsmc(nt, 2.0)
-testmvlgcsmc(nt, 0.5)
+@time @testset "MV Linear Gaussian: Serial cSMC" begin
+  testmvlgcsmc(1, 2.0)
+  testmvlgcsmc(1, 0.5)
+end
+
+@time @testset "MV Linear Gaussian: Parallel cSMC" begin
+  nt = min(Threads.nthreads(), 4)
+  testmvlgcsmc(nt, 2.0)
+  testmvlgcsmc(nt, 0.5)
+end
