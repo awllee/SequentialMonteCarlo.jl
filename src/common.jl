@@ -101,3 +101,32 @@ end
   end
   return
 end
+
+@inline function pickParticleBS!(path::Vector{Particle},
+  smcio::SMCIO{Particle, ParticleScratch}, lM::F) where {Particle,
+  ParticleScratch, F<:Function}
+  @assert smcio.fullOutput
+  @assert length(path) == smcio.n
+  n::Int64 = smcio.n
+  N::Int64 = smcio.N
+  allAs::Vector{Vector{Int64}} = smcio.allAs
+  allZetas::Vector{Vector{Particle}} = smcio.allZetas
+  allWs::Vector{Vector{Float64}} = smcio.allWs
+  bws::Vector{Float64} = smcio.internal.scratch1
+  pScratch::ParticleScratch = smcio.internal.particleScratch
+
+  rng = getRNG()
+  k::Int64 = sampleCategorical(smcio.ws, rng)
+
+  @inbounds particleCopy!(path[n], allZetas[n][k])
+  for p = n-1:-1:1
+    @inbounds bws .= log.(allWs[p])
+    for j in 1:N
+      @inbounds bws[j] += lM(p+1, allZetas[p][j], path[p+1], pScratch)
+    end
+    m::Float64 = maximum(bws)
+    bws .= exp.(bws .- m)
+    k = sampleCategorical(bws, rng)
+    @inbounds particleCopy!(path[p], allZetas[p][k])
+  end
+end

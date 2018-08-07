@@ -132,7 +132,7 @@ function testFullOutput(ffk::FiniteFeynmanKac.FiniteFK, nthreads::Int64,
   ffkout = FiniteFeynmanKac.calculateEtasZs(ffk)
   model = FiniteFeynmanKac.makeSMCModel(ffk)
   n = model.maxn
-  smcio = SMCIO{model.particle, model.pScratch}(2^22, n, nthreads, true,
+  smcio = SMCIO{model.particle, model.pScratch}(2^20, n, nthreads, true,
     essThreshold)
   smc!(model, smcio)
 
@@ -198,7 +198,7 @@ function testcsmc(nthreads::Int64, essThreshold::Float64)
   testapproxequal(freqs, densities, 0.05, false)
 end
 
-setRNGs(0)
+setRNGs(1)
 
 verbose = false
 
