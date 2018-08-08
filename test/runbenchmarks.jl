@@ -7,9 +7,8 @@ import SMCExamples.Lorenz96.defaultLorenzModel
 using Compat.Dates
 
 using BenchmarkTools, Compat
-# import Hwloc
 
-if VERSION.minor < 7
+if VERSION < v"0.7-"
   function benchMachineInfo()
     s::String = "$(Sys.MACHINE)\n" *
       "$(Sys.cpu_info()[1].model) ($(Sys.cpu_name)) ; " *
