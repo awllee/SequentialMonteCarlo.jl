@@ -167,7 +167,7 @@ function _SMCInternal{Particle, ParticleScratch}(N::Int64, n::Int64,
   oldEves = Vector{Int64}(undef, N)
 
   ## assign user-defined particle scratch space
-  @assert ParticleScratch == Nothing || !isbits(ParticleScratch)
+  @assert ParticleScratch == Nothing || !isbitstype(ParticleScratch)
   particleScratch = ParticleScratch()
 
   parallel::_SMCInternalParallel{Particle, ParticleScratch} =
