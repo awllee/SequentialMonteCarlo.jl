@@ -18,18 +18,15 @@ matrix:
   allow_failures:
     - julia: nightly
 
-## uncomment the following lines to override the default test script
-# script:
-#  - julia -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("SequentialMonteCarlo")'
-#  - JULIA_NUM_THREADS=2 julia -e 'Pkg.test("SequentialMonteCarlo"; coverage=true)'
+
 after_success:
   # push coverage results to Coveralls
-  - julia -e 'import Pkg, SequentialMonteCarlo; cd(dirname(pathof(SequentialMonteCarlo))); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'import Pkg, SequentialMonteCarlo; cd(joinpath(dirname(pathof(SequentialMonteCarlo)), "..")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
   # - julia -e 'cd(Pkg.dir("SequentialMonteCarlo")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
   # push coverage results to Codecov
-  - julia -e 'import Pkg, SequentialMonteCarlo; cd(dirname(pathof(SequentialMonteCarlo))); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'import Pkg, SequentialMonteCarlo; cd(joinpath(dirname(pathof(SequentialMonteCarlo)), "..")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
   # - julia -e 'cd(Pkg.dir("SequentialMonteCarlo")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
   # make documentation
   - julia -e 'import Pkg; Pkg.add("Documenter")'
-  - julia -e 'SequentialMonteCarlo; cd(dirname(pathof(SequentialMonteCarlo))); include(joinpath("docs", "make.jl"))
+  - julia -e 'SequentialMonteCarlo; cd(joinpath(dirname(pathof(SequentialMonteCarlo)), "..")); include(joinpath("docs", "make.jl"))
   # - julia -e 'cd(Pkg.dir("SequentialMonteCarlo")); include(joinpath("docs", "make.jl"))'
