@@ -1,5 +1,3 @@
-import Compat.Nothing
-
 @inline function _iota!(array::Vector{Int64})
   for i in eachindex(array)
     @inbounds array[i] = i

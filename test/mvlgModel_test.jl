@@ -3,7 +3,7 @@ using RNGPool
 using SMCExamples.MVLinearGaussian
 using StaticArrays
 import SMCExamples.Particles.MVFloat64Particle
-using Compat.Test
+using Test
 
 setRNGs(0)
 

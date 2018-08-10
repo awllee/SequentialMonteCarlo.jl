@@ -1,9 +1,6 @@
-VERSION < v"0.7-" && __precompile__()
-
 module SequentialMonteCarlo
 
-import Compat.undef
-import Compat.Statistics.mean
+import Statistics.mean
 using RNGPool
 
 include("structures.jl")

@@ -1,5 +1,4 @@
-using Compat.Test
-import Compat.undef
+using Test
 
 function testapproxequal(a::Vector{Float64}, b::Vector{Float64}, tol::Float64,
   verbose::Bool)
@@ -14,6 +13,8 @@ function testapproxequal(a::Float64, b::Float64, tol::Float64, verbose::Bool)
   verbose && println("$v < $tol ?")
   @test v < tol
 end
+
+println("Running tests: ", Threads.nthreads(), " threads")
 
 include("finiteFK_test.jl")
 

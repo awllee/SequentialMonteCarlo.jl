@@ -1,5 +1,3 @@
-import Compat.copyto!
-
 """
     smc!(model::SMCModel, smcio::SMCIO)
 Run the SMC algorithm for the given model and input/output arguments.

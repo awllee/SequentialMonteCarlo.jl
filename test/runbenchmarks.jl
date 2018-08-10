@@ -4,26 +4,15 @@ import SMCExamples.MVLinearGaussian.defaultMVLGModel
 import SMCExamples.SMCSampler.defaultSMCSampler
 import SMCExamples.Lorenz96.defaultLorenzModel
 
-using Compat.Dates
-
+using Dates
 using BenchmarkTools, Compat
 
-if VERSION < v"0.7-"
-  function benchMachineInfo()
-    s::String = "$(Sys.MACHINE)\n" *
-      "$(Sys.cpu_info()[1].model) ($(Sys.cpu_name)) ; " *
-      "$(Sys.CPU_CORES) Logical cores\n" *
-      "Julia $VERSION using $(Threads.nthreads()) threads"
-    return s
-  end
-else
-  function benchMachineInfo()
-    s::String = "$(Sys.MACHINE)\n" *
-    "$(Sys.cpu_info()[1].model) ($(Sys.CPU_NAME)) ; " *
-      "$(Sys.CPU_THREADS) Logical cores\n" *
-      "Julia $VERSION using $(Threads.nthreads()) threads"
-    return s
-  end
+function benchMachineInfo()
+  s::String = "$(Sys.MACHINE)\n" *
+  "$(Sys.cpu_info()[1].model) ($(Sys.CPU_NAME)) ; " *
+    "$(Sys.CPU_THREADS) Logical cores\n" *
+    "Julia $VERSION using $(Threads.nthreads()) threads"
+  return s
 end
 
 

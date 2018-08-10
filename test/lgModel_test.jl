@@ -1,8 +1,7 @@
 using SequentialMonteCarlo
 using RNGPool
 using SMCExamples.LinearGaussian
-using Compat.Test
-import Compat.undef
+using Test
 
 setRNGs(0)
 

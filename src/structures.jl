@@ -1,5 +1,3 @@
-import Compat.hasmethod
-
 """
     SMCModel(M!::F1, lG::F2, maxn::Int64, particle::Type, pScratch::Type) where
       {F1<:Function,F2<:Function}

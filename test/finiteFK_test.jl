@@ -2,7 +2,7 @@ using SequentialMonteCarlo
 using RNGPool
 using SMCExamples.FiniteFeynmanKac
 import SMCExamples.Particles.Int64Particle
-using Compat.Test
+using Test
 
 function Id(p::Int64Particle)
   return p.x

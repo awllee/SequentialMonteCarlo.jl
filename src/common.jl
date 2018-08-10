@@ -1,5 +1,4 @@
 import NonUniformRandomVariateGeneration.sampleCategorical
-import Compat: hasmethod, copyto!
 
 # basic routines used by both smcSerial and smcParallel
 

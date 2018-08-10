@@ -16,18 +16,12 @@ The [documentation](https://awllee.github.io/SequentialMonteCarlo.jl/latest) and
 Pkg.add("SequentialMonteCarlo")
 ```
 
-If you want the latest version from the master branch, not just the latest release, you can additionally call
-```julia
-Pkg.checkout("SequentialMonteCarlo")
-```
-
 ## Quick start:
 
 ```julia
 ## Load the package
 
 using SequentialMonteCarlo
-import Compat.Nothing
 
 ## Define a particle consisting of one Float64
 
