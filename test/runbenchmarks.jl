@@ -5,7 +5,7 @@ import SMCExamples.SMCSampler.defaultSMCSampler
 import SMCExamples.Lorenz96.defaultLorenzModel
 
 using Dates
-using BenchmarkTools, Compat
+using BenchmarkTools
 
 function benchMachineInfo()
   s::String = "$(Sys.MACHINE)\n" *
