@@ -25,5 +25,5 @@ after_success:
   # push coverage results to Codecov
   - julia -e 'import Pkg, SequentialMonteCarlo; cd(joinpath(dirname(pathof(SequentialMonteCarlo)), "..")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
   # make documentation
-  - julia -e 'import Pkg; Pkg.add("Documenter")'
+  - julia -e 'import Pkg; ps=Pkg.PackageSpec(name="Documenter", version="0.19"); Pkg.add(ps); Pkg.pin(ps)'
   - julia -e 'import SequentialMonteCarlo; cd(joinpath(dirname(pathof(SequentialMonteCarlo)), "..")); include(joinpath("docs", "make.jl"))'
