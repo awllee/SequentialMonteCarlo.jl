@@ -2,7 +2,7 @@
 
 ## The measures and integrals
 
-We define a sequence of measures $\gamma_1, \ldots, \gamma_n$ by $\gamma_1 := M_1$ and for $p \in \{2,\ldots,n\}$, \\[ \gamma_p(A) := \int_{\mathsf{X}^p} \mathbf{1}_A(x_p) M_1({\rm d}x_1) \prod_{q=2}^p G_{q-1}(x_{q-1}) M_q(x_{q-1}, {\rm d}x_q), \qquad A \in \mathcal{X}. \\] We also define a second sequence of measures $\hat{\gamma}_1,\ldots,\hat{\gamma}_n$ by $\hat{\gamma}_p := \gamma_p \cdot G_p$ for $p \in \{1,\ldots,n\}$.
+We define a sequence of measures $\gamma_1, \ldots, \gamma_n$ by $\gamma_1 := M_1$ and for $p \in \{2,\ldots,n\}$, $\[ \gamma_p(A) := \int_{\mathsf{X}^p} \mathbf{1}_A(x_p) M_1({\rm d}x_1) \prod_{q=2}^p G_{q-1}(x_{q-1}) M_q(x_{q-1}, {\rm d}x_q), \qquad A \in \mathcal{X}. \]$ We also define a second sequence of measures $\hat{\gamma}_1,\ldots,\hat{\gamma}_n$ by $\hat{\gamma}_p := \gamma_p \cdot G_p$ for $p \in \{1,\ldots,n\}$.
 
 Letting $1$ denote the constant function $x \mapsto 1$, the normalizing constants associated with each $\gamma_p$ and $\hat{\gamma}_p$ are $\gamma_p(1)$ and $\hat{\gamma}_p(1)$, respectively. We define \\[ Z_p := \gamma_p(1), \qquad \hat{Z}_p := \hat{\gamma}_p(1), \qquad p\in \\{1,\ldots,n\\}. \\] This allows us to define their normalized, probability measure counterparts \\[ \eta_p := \gamma_p / Z_p, \qquad \hat{\eta}_p := \hat{\gamma}_p / \hat{Z}_p, \qquad p \in \\{1,\ldots,n\\}. \\]
 
