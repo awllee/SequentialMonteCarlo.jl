@@ -20,7 +20,10 @@ Input: reference path $(x_{1}^{{\rm ref}},\ldots,x_{n}^{{\rm ref}})$
 1. Output the path $(\zeta_{1}^{K_{1}},\ldots,\zeta_{n}^{K_{n}})$.
 ---
 
-cSMC is of special interest as it defines a Markov kernel that is ergodic, for $N \geq 2$, with invariant probability measure given by \\[ \hat{\pi}(A)=\hat{Z}_{n}^{-1}\int_{A}G_{n}(x_{n})M_{1}({\rm d}x_{1})\prod_{p=2}^{n}G_{p-1}(x_{p-1})M_{p}(x_{p-1},{\rm d}x_{p}), \qquad A \in \mathcal{X}^{\otimes{n}}. \\]
+cSMC is of special interest as it defines a Markov kernel that is ergodic, for $N \geq 2$, with invariant probability measure given by
+```math
+\hat{\pi}(A)=\hat{Z}_{n}^{-1}\int_{A}G_{n}(x_{n})M_{1}({\rm d}x_{1})\prod_{p=2}^{n}G_{p-1}(x_{p-1})M_{p}(x_{p-1},{\rm d}x_{p}), \qquad A \in \mathcal{X}^{\otimes{n}}.
+```
 
 That is, the Markov kernel $P_{N}(x^{{\rm ref}}, \cdot)$ defined by calling the cSMC algorithm has invariant probability measure $\hat{\pi}$. Theoretical results, in particular concerning the effect of $N$ on the rate of convergence of $P_{N}$, have been developed by Chopin & Singh (2015), Andrieu et al. (2018) and Lindsten et al. (2015).
 

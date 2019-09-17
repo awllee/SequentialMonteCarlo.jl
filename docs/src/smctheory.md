@@ -7,13 +7,28 @@ The following Theorem provides some justification for the use of the [main part
 ---
 **Theorem** [Del Moral, 2004]. Let the potential functions $G_1, \ldots, G_n$ be bounded and strictly positive. There exist maps $\hat{\sigma}_1^2, \ldots, \hat{\sigma}_n^2$ such that the following hold for an arbitrary, bounded $f$:
 
-1. Lack-of-bias: $\mathbb{E} \left[ \hat{\gamma}_p^N(f) \right] = \hat{\gamma}_p(f)$ for all $N \geq 1$.
+* Lack-of-bias: $\mathbb{E} \left[ \hat{\gamma}_p^N(f) \right] = \hat{\gamma}_p(f)$ for all $N \geq 1$.
 
-1. Consistency: $\hat{\gamma}_p^N(f)\overset{a.s.}{\rightarrow}\hat{\gamma}_p(f)$ and $\hat{\eta}_p^N(f)\overset{a.s.}{\rightarrow}\hat{\eta}_p(f)$.
+* Consistency: $\hat{\gamma}_p^N(f)\overset{a.s.}{\rightarrow}\hat{\gamma}_p(f)$ and $\hat{\eta}_p^N(f)\overset{a.s.}{\rightarrow}\hat{\eta}_p(f)$.
 
-1. Asymptotic variance and mean-squared error (MSE): \\[ N {\rm var} \left\\{ \hat{\gamma}_p^N(f) / \hat{\gamma}_p(1) \right\\} \rightarrow \hat{\sigma}_p^2(f), \\] and \\[ N \mathbb{E} \left[ \left\\{ \hat{\eta}_p^N(f) - \hat{\eta}_p(f) \right\\} ^2 \right] \rightarrow \hat{\sigma}_p^2(f-\hat{\eta}_p(f)). \\]
+* Asymptotic variance and mean-squared error (MSE):
 
-1. Central Limit Theorems: \\[ \sqrt{N} \left( \hat{\gamma}_p^N(f) / \hat{\gamma}_p(1) - \eta_p^N(f) \right) \overset{L}{\rightarrow} N(0,\hat{\sigma}_p^2(f)), \\] and \\[ \sqrt{N} \left( \hat{\eta}_p^N(f) - \eta_p^N(f) \right) \overset{L}{\rightarrow} N(0,\hat{\sigma}_p^2(f - \hat{\eta}_p(f))). \\]
+```math
+N {\rm var} \left \{ \hat{\gamma}_p^N(f) / \hat{\gamma}_p(1) \right \} \rightarrow \hat{\sigma}_p^2(f),
+```
+  and
+```math
+N \mathbb{E} \left[ \left\{ \hat{\eta}_p^N(f) - \hat{\eta}_p(f) \right\} ^2 \right] \rightarrow \hat{\sigma}_p^2(f-\hat{\eta}_p(f)).
+```
+
+* Central Limit Theorems:
+```math
+\sqrt{N} \left( \hat{\gamma}_p^N(f) / \hat{\gamma}_p(1) - \eta_p^N(f) \right) \overset{L}{\rightarrow} N(0,\hat{\sigma}_p^2(f)),
+```
+  and
+```math
+\sqrt{N} \left( \hat{\eta}_p^N(f) - \eta_p^N(f) \right) \overset{L}{\rightarrow} N(0,\hat{\sigma}_p^2(f - \hat{\eta}_p(f))).
+```
 ---
 
 ### Note on the sorted ancestor indices

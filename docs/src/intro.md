@@ -18,12 +18,26 @@ Web pages maintained by [Arnaud Doucet](http://www.stats.ox.ac.uk/~doucet/smc_re
 
 Let $(\mathsf{X}, \mathcal{X})$ be a measurable space. The initial distribution $M_1$ is a probability measure on this space, and the Markov kernels $M_{2}, \ldots, M_n$ evolve on this space. Every measure defined here, unless explicitly stated, will be a measure on this space. The non-negative functions $G_1, \ldots, G_n$ have domain $\mathsf{X}$. Every function $f : \mathsf{X} \rightarrow \mathbb{R}$ will be assumed to be measurable.
 
-1. *Weighting:* if $\mu$ is a measure and $g:\mathsf{X} \rightarrow \mathbb{R}_{+}$ a non-negative function, then $\mu \cdot g$ is the measure \\[ (\mu\cdot g)(A) := \int_{A}\mu({\rm d}x)g(x), \qquad A \in \mathcal{X}. \\] One can think of $\mu \cdot g$ as $\mu$ **weighted** by $g$.
+* *Weighting:* if $\mu$ is a measure and $g:\mathsf{X} \rightarrow \mathbb{R}_{+}$ a non-negative function, then $\mu \cdot g$ is the measure
+```math
+(\mu\cdot g)(A) := \int_{A}\mu({\rm d}x)g(x), \qquad A \in \mathcal{X}.
+```
+  One can think of $\mu \cdot g$ as $\mu$ **weighted** by $g$.
 
-2. *Mutation:* if $\mu$ is a measure and P is a Markov kernel then $\mu P$ is the measure defined by \\[ \mu P(A):= \int_{\mathsf{X}} \mu({\rm d}x) P(x,A), \qquad A \in \mathcal{X}. \\] When $\mu$ is a probability measure, $\mu P(A) = \Pr(Y\in A)$ when $Y\sim P(X,\cdot)$ and $X \sim \mu$. One can think of $\mu P$ as $\mu$ **mutated** by the Markov transition kernel $P$.
+* *Mutation:* if $\mu$ is a measure and P is a Markov kernel then $\mu P$ is the measure defined by
+```math
+\mu P(A):= \int_{\mathsf{X}} \mu({\rm d}x) P(x,A), \qquad A \in \mathcal{X}.
+```
+  When $\mu$ is a probability measure, $\mu P(A) = \Pr(Y\in A)$ when $Y\sim P(X,\cdot)$ and $X \sim \mu$. One can think of $\mu P$ as $\mu$ **mutated** by the Markov transition kernel $P$.
 
-3. *Integration:* if $\mu$ is a measure and $f:\mathsf{X}\rightarrow\mathbb{R}$ then \\[ \mu(f) := \int_{\mathsf{X}}f(x)\mu({\rm d}x). \\]
+* *Integration:* if $\mu$ is a measure and $f:\mathsf{X}\rightarrow\mathbb{R}$ then
+```math
+\mu(f) := \int_{\mathsf{X}}f(x)\mu({\rm d}x).
+```
 
-4. We denote by $\delta_{x}$ the Dirac measure centred at x. Note that $\delta_{x}(f) = f(x)$.
+* We denote by $\delta_{x}$ the Dirac measure centred at x. Note that $\delta_{x}(f) = f(x)$.
 
-5. A random variable $X$ has a Categorical$(a_1,\ldots,a_{m})$ distribution if \\[ \Pr(X=i) = \frac{a_i}{\sum_{j=1}^m a_j} \mathbf{1}_{\\{1,\ldots,m\\}}(i). \\]
+* A random variable $X$ has a Categorical$(a_1,\ldots,a_{m})$ distribution if
+```math
+\Pr(X=i) = \frac{a_i}{\sum_{j=1}^m a_j} \mathbf{1}_{\{1,\ldots,m}\}(i).
+```

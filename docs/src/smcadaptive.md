@@ -4,7 +4,11 @@ There is a tuning parameter associated with the ```SequentialMonteCarlo.smc``` a
 
 ## (Relative) effective sample size
 
-The adaptive SMC algorithm essentially involves choosing $(A_{p-1}^{1}, \ldots, A_{p-1}^N) = \left(1, \ldots, N \right)$ when the *weights* associated with particles $\zeta_{p-1}^{1}, \ldots, \zeta_{p-1}^N$ have a *relative effective sample size* exceeding $\tau$. This is sometimes referred to as "not resampling". The relative effective sample size of a collection of weights is defined as \\[ {\rm rESS}(w_{1}, \ldots, w_{N}) := \frac{\left(\frac{1}{N}\sum_{i=1}^N w_{i} \right)^{2}}{\frac{1}{N} \sum_{i=1}^N w_{i}^{2}}. \\] This function is invariant to rescaling of all of the weights by a common constant.
+The adaptive SMC algorithm essentially involves choosing $(A_{p-1}^{1}, \ldots, A_{p-1}^N) = \left(1, \ldots, N \right)$ when the *weights* associated with particles $\zeta_{p-1}^{1}, \ldots, \zeta_{p-1}^N$ have a *relative effective sample size* exceeding $\tau$. This is sometimes referred to as "not resampling". The relative effective sample size of a collection of weights is defined as
+```math
+{\rm rESS}(w_{1}, \ldots, w_{N}) := \frac{\left(\frac{1}{N}\sum_{i=1}^N w_{i} \right)^{2}}{\frac{1}{N} \sum_{i=1}^N w_{i}^{2}}.
+```
+This function is invariant to rescaling of all of the weights by a common constant.
 
 In the [SMC Algorithm](@ref basicsmc) we can view the weights associated with the particles $\zeta_{p-1}^{1}, \ldots, \zeta_{p-1}^N$ as being $W_{p-1}^{1}, \ldots, W_{p-1}^N$ where $W_{p-1}^{i} \propto G_{p-1}(\zeta_{p-1}^{i})$, and their relative effective sample size is ${\rm rESS}(W_{p-1}^{1}, \ldots, W_{p-1}^N)$.
 
@@ -28,7 +32,14 @@ Note that the time $n-1$ particles are always resampled, so that $\eta_{n}^N$ is
 
 ## Particle approximations
 
-We define \\[ \eta_{p}^N \propto \sum_{i=1}^N \left(W_{p-1}^{i} \right)^{ \mathbb{I}(R_{p-1} = 0)} \delta_{\zeta_{p}^{i}}, \qquad p \in \\{1,\ldots,n\\}, \\] and \\[ \hat{\eta}_{p}^N \propto \sum_{i=1}^N W_{p}^{i} \delta_{\zeta_{p}^{i}}, \qquad p \in \\{1,\ldots,n\\}. \\]
+We define
+```math
+\eta_{p}^N \propto \sum_{i=1}^N \left(W_{p-1}^{i} \right)^{ \mathbb{I}(R_{p-1} = 0)} \delta_{\zeta_{p}^{i}}, \qquad p \in \{1,\ldots,n\},
+```
+and
+```math
+\hat{\eta}_{p}^N \propto \sum_{i=1}^N W_{p}^{i} \delta_{\zeta_{p}^{i}}, \qquad p \in \{1,\ldots,n\}.
+```
 
 Appropriate approximations of $\hat{Z}_{1}^N, \ldots, \hat{Z}_{n}^N$ are also well-defined, but tedious to display.
 

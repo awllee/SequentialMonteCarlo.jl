@@ -2,7 +2,11 @@
 
 ## Asymptotic variances
 
-We recall that the particle approximations have [asymptotic variances](@ref maintheory) associated with particular test functions $f$. Letting $n$ be arbitrary to avoid additional indexing notation, the values $\sigma_n^2(f)$ and $\hat{\sigma}_n^2(f)$ are typically not possible to calculate exactly. They can be decomposed into sums as follows: \\[ \sigma_n^2(f) = \sum_{p=1}^n v_{p,n}(f), \qquad \hat{\sigma}_n^2(f) = \sum_{p=1}^n \hat{v}_{p,n}(f).\\] The quantities $v_{p,n}(f)$ and $\hat{v}_{p,n}(f)$ also cannot be computed exactly in general, but this decomposition can in some circumstances shed some light on the nature of the approximation errors.
+We recall that the particle approximations have [asymptotic variances](@ref maintheory) associated with particular test functions $f$. Letting $n$ be arbitrary to avoid additional indexing notation, the values $\sigma_n^2(f)$ and $\hat{\sigma}_n^2(f)$ are typically not possible to calculate exactly. They can be decomposed into sums as follows:
+```math
+\sigma_n^2(f) = \sum_{p=1}^n v_{p,n}(f), \qquad \hat{\sigma}_n^2(f) = \sum_{p=1}^n \hat{v}_{p,n}(f).
+```
+The quantities $v_{p,n}(f)$ and $\hat{v}_{p,n}(f)$ also cannot be computed exactly in general, but this decomposition can in some circumstances shed some light on the nature of the approximation errors.
 
 ## The estimators
 

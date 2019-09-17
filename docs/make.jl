@@ -2,7 +2,7 @@ using Documenter, SequentialMonteCarlo
 
 makedocs(
   modules = [SequentialMonteCarlo],
-  format = :html,
+  format = Documenter.HTML(),
   sitename = "SequentialMonteCarlo.jl",
   authors = "Anthony Lee",
   pages = [
@@ -27,8 +27,4 @@ makedocs(
 deploydocs(
   repo = "github.com/awllee/SequentialMonteCarlo.jl.git",
   target = "build",
-  julia  = "1.0",
-  osname = "linux",
-  deps = nothing,
-  make = nothing,
 )
