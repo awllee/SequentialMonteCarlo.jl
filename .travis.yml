@@ -4,9 +4,9 @@ os:
   - linux
   - osx
 julia:
-  - 0.7
   - 1.0
-  - nightly
+  - 1.1
+  - 1.2
 env:
   - JULIA_NUM_THREADS=2
 notifications:
@@ -24,6 +24,14 @@ after_success:
   - julia -e 'import Pkg, SequentialMonteCarlo; cd(joinpath(dirname(pathof(SequentialMonteCarlo)), "..")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
   # push coverage results to Codecov
   - julia -e 'import Pkg, SequentialMonteCarlo; cd(joinpath(dirname(pathof(SequentialMonteCarlo)), "..")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
-  # make documentation
-  - julia -e 'import Pkg; ps=Pkg.PackageSpec(name="Documenter", version="0.19"); Pkg.add(ps); Pkg.pin(ps)'
-  - julia -e 'import SequentialMonteCarlo; cd(joinpath(dirname(pathof(SequentialMonteCarlo)), "..")); include(joinpath("docs", "make.jl"))'
+
+jobs:
+  include:
+    - stage: "Documentation"
+      julia: 1.0
+      os: linux
+      script:
+        - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd()));
+                                               Pkg.instantiate()'
+        - julia --project=docs/ docs/make.jl
+      after_success: skip
