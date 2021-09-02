@@ -1,10 +1,9 @@
 # SequentialMonteCarlo.jl
 
-[![Build Status](https://travis-ci.org/awllee/SequentialMonteCarlo.jl.svg?branch=master)](https://travis-ci.org/awllee/SequentialMonteCarlo.jl)
-[![Build status](https://ci.appveyor.com/api/projects/status/t1tqv980rmvwj6c5?svg=true)](https://ci.appveyor.com/project/awllee/sequentialmontecarlo-jl)
-[![Coverage Status](https://coveralls.io/repos/github/awllee/SequentialMonteCarlo.jl/badge.svg?branch=master)](https://coveralls.io/github/awllee/SequentialMonteCarlo.jl?branch=master)
-[![codecov.io](http://codecov.io/github/awllee/SequentialMonteCarlo.jl/coverage.svg?branch=master)](http://codecov.io/github/awllee/SequentialMonteCarlo.jl?branch=master)
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://awllee.github.io/SequentialMonteCarlo.jl/latest)
+<!-- badges: start -->
+[![CI](https://github.com/awllee/SequentialMonteCarlo.jl/workflows/CI/badge.svg)](https://github.com/awllee/SequentialMonteCarlo.jl/actions)
+[![codecov](https://codecov.io/gh/awllee/SequentialMonteCarlo.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/awllee/SequentialMonteCarlo.jl)
+<!-- badges: end -->
 
 This package provides a light interface to a serial and multi-threaded implementation of the Sequential Monte Carlo (SMC) algorithm. SMC is a random algorithm for approximate numerical integration and/or sampling.
 
