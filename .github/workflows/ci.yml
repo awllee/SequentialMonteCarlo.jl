@@ -50,3 +50,13 @@ jobs:
         if: matrix.os == 'macOS-latest' && matrix.version == '1'
         with:
           file: lcov.info
+  docs:
+    name: Documentation
+    if: matrix.os == 'macOS-latest' && matrix.version == '1'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/julia-buildpkg@latest
+      - uses: julia-actions/julia-docdeploy@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
