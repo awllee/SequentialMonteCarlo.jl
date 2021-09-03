@@ -52,7 +52,8 @@ jobs:
           file: lcov.info
   docs:
     name: Documentation
-    if: matrix.os == 'macOS-latest' && matrix.version == '1'
+    runs-on: macOS-latest
+    if: matrix.version == '1'
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/julia-buildpkg@latest
