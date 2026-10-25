@@ -24,7 +24,9 @@ makedocs(
   ]
 )
 
-deploydocs(
-  repo = "github.com/awllee/SequentialMonteCarlo.jl.git",
-  target = "build",
-)
+if "--deploy" in ARGS
+  deploydocs(
+    repo = "github.com/awllee/SequentialMonteCarlo.jl.git",
+    target = "build",
+  )
+end

@@ -3,10 +3,20 @@ on:
   schedule:
     - cron: 0 0 * * *
   workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   CompatHelper:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v3
+        with:
+          delete-old-caches: 'false'
       - name: "Add the General registry via Git"
         run: |
           import Pkg
@@ -29,4 +39,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMPATHELPER_PRIV: ${{ secrets.DOCUMENTER_KEY }}
-          # COMPATHELPER_PRIV: ${{ secrets.COMPATHELPER_PRIV }}
