@@ -1,0 +1,93 @@
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.13.2"
+manifest_format = "2.1"
+project_hash = "776d237d6f46736279e6c891afb500d4e4ed251f"
+
+[[deps.Artifacts]]
+uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
+version = "1.11.0"
+
+[[deps.CompilerSupportLibraries_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
+version = "1.5.5+2"
+
+[[deps.Libdl]]
+uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
+version = "1.11.0"
+
+[[deps.LinearAlgebra]]
+deps = ["Libdl", "OpenBLAS_jll", "libblastrampoline_jll"]
+uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+version = "1.13.0"
+
+[[deps.NonUniformRandomVariateGeneration]]
+deps = ["Random"]
+git-tree-sha1 = "d01f27ff3f969802cc94f64a727b2452a1e60a16"
+registries = "General"
+uuid = "cd27a545-1e2a-5997-b51f-f9caa06aeab2"
+version = "2.0.0"
+
+[[deps.OpenBLAS_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
+uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
+version = "0.3.30+0"
+
+[[deps.RNGPool]]
+deps = ["Random123"]
+git-tree-sha1 = "a8b726e04b6942d2e4b70f1b76f97a173c9ed993"
+registries = "General"
+uuid = "c7fc2d14-d53c-5e81-ac30-66aba9c03525"
+version = "2.0.0"
+
+[[deps.Random]]
+deps = ["SHA"]
+uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+version = "1.11.0"
+
+[[deps.Random123]]
+deps = ["Random", "RandomNumbers"]
+git-tree-sha1 = "dbe5fd0b334694e905cb9fda73cd8554333c46e2"
+registries = "General"
+uuid = "74087812-796a-5b5d-8853-05524746bad3"
+version = "1.7.1"
+
+[[deps.RandomNumbers]]
+deps = ["Random"]
+git-tree-sha1 = "c6ec94d2aaba1ab2ff983052cf6a606ca5985902"
+registries = "General"
+uuid = "e6cf234a-135c-5ec9-84dd-332b85af5143"
+version = "1.6.0"
+
+[[deps.SHA]]
+uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+version = "1.0.0"
+
+[[deps.SequentialMonteCarlo]]
+deps = ["NonUniformRandomVariateGeneration", "RNGPool", "Statistics"]
+path = "."
+uuid = "8c675823-c5d5-50f8-acb2-29aff48dfc1d"
+version = "0.6.2"
+
+[[deps.Statistics]]
+deps = ["LinearAlgebra"]
+git-tree-sha1 = "e2b53ce13a53367e96601081e33d34746b571bad"
+registries = "General"
+uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+version = "1.11.5"
+
+    [deps.Statistics.extensions]
+    SparseArraysExt = ["SparseArrays"]
+
+    [deps.Statistics.weakdeps]
+    SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
+[[deps.libblastrampoline_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
+version = "5.15.0+0"
+
+[registries.General]
+url = "https://github.com/JuliaRegistries/General.git"
+uuid = "23338594-aafe-5451-b93e-139f81909106"

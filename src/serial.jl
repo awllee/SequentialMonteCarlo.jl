@@ -44,10 +44,10 @@ end
   smcio.internal.nresamples += 1
   if conditional
     smcio.internal.as[1] = 1
-    sampleSerial!(smcio.internal.as, getRNG(), smcio.ws, smcio.N-1,
+    sampleSerial!(smcio.internal.as, Random.default_rng(), smcio.ws, smcio.N-1,
       smcio.internal.scratch1, smcio.internal.scratch2, 1)
   else
-    sampleSerial!(smcio.internal.as, getRNG(), smcio.ws, smcio.N,
+    sampleSerial!(smcio.internal.as, Random.default_rng(), smcio.ws, smcio.N,
       smcio.internal.scratch1, smcio.internal.scratch2)
   end
 
@@ -62,7 +62,7 @@ end
   lws = smcio.internal.lws
   ws = smcio.ws
   as = smcio.internal.as
-  engine = getRNG()
+  engine = Random.default_rng()
   pScratch = smcio.internal.particleScratch
   smcio.internal.nresamples = 0
 

@@ -16,6 +16,8 @@ end
 
 println("Running tests: ", Threads.nthreads(), " threads")
 
+include("rng_test.jl")
+
 include("finiteFK_test.jl")
 
 @testset "LGModel tests" begin

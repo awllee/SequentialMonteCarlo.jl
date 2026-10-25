@@ -1,8 +1,9 @@
 using SequentialMonteCarlo
-using RNGPool
+using Random
 using SMCExamples.FiniteFeynmanKac
 import SMCExamples.Particles.Int64Particle
 using Test
+using StaticArrays
 
 function Id(p::Int64Particle)
   return p.x
@@ -198,12 +199,17 @@ function testcsmc(nthreads::Int64, essThreshold::Float64)
   testapproxequal(freqs, densities, 0.05, false)
 end
 
-setRNGs(1)
+Random.seed!(1)
 
 verbose = false
 
 d = 3
-ffk = FiniteFeynmanKac.randomFiniteFK(d, 10)
+# A fixed, well-conditioned model keeps variance-estimator checks independent
+# of the RNG implementation used to generate the test problem.
+ffk = FiniteFeynmanKac.FiniteFK(
+  SVector(0.6, 0.3, 0.1),
+  SMatrix{3,3,Float64}[SMatrix{3,3}(0.7, 0.4, 0.4, 0.2, 0.5, 0.2, 0.1, 0.1, 0.4) for _ in 1:9],
+  [SVector(0.8, 0.4 + 0.02p, 0.2) for p in 1:10])
 
 println("\nSerial: always resampling\n")
 @time testFullOutput(ffk, 1, 2.0, verbose)

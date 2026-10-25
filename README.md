@@ -101,3 +101,24 @@ smcio = SMCIO{model.particle, model.pScratch}(2^20, 10, nthreads, true)
 @time smc!(model, smcio)
 @time smc!(model, smcio)
 ```
+
+## Migration to 0.7
+
+Requires Julia 1.10 or later and SMCExamples 0.7 when running the examples or tests.
+Replace `using RNGPool` with `using Random`, callback annotations `rng::RNG` with
+`rng::AbstractRNG` (or leave the argument untyped), and `setRNGs(seed)` with
+`Random.seed!(seed)`. Random streams differ from earlier versions and may change
+with Julia versions or thread counts. `Threads.@threads` remains supported;
+random draws now use Julia's task-local default RNG.
+
+To test coordinated changes before both 0.7 releases are registered, start Julia
+with `julia --threads=2,1` from this checkout and use a temporary environment:
+
+```julia
+using Pkg
+smcpath = pwd()
+examplespath = joinpath(dirname(smcpath), "SMCExamples")
+Pkg.activate(; temp=true)
+Pkg.develop([PackageSpec(path=smcpath), PackageSpec(path=examplespath)])
+Pkg.test("SequentialMonteCarlo")
+```

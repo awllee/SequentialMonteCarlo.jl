@@ -71,7 +71,7 @@ end
     @inbounds localLogWs::SubVectorF64 = ip.localLogWs[i]
     @inbounds localWs::SubVectorF64 = ip.localWs[i]
     @inbounds pScratch::ParticleScratch = ip.particleScratches[i]
-    engine::RNG = getRNG()
+    engine::AbstractRNG = Random.default_rng()
 
     if i == 1 && ref != nothing
       _mutateParticles!(localZetas, engine, p, model.M!, localZetaAncs,
@@ -102,7 +102,7 @@ end
       @inbounds localScratch1 = ip.localScratch1s[i]
       @inbounds localWs = ip.localWs[i]
       @inbounds localN = ip.Ns[i]
-      engine::RNG = getRNG()
+      engine::AbstractRNG = Random.default_rng()
       start::Int64 = ip.Nperthread * (i - 1)
       @inbounds offset::Int64 = i == 1 ? 0 : ip.NsPartial[i-1]
       if i == 1 && conditional
@@ -135,10 +135,10 @@ end
   partialSums::Vector{Float64} = ip.partialSums
   partialSums ./= smcio.internal.sws
   if conditional
-    sampleMultinomial!(smcio.N-1, partialSums, Ns, getRNG())
+    sampleMultinomial!(smcio.N-1, partialSums, Ns, Random.default_rng())
     @inbounds Ns[1] += 1
   else
-    sampleMultinomial!(smcio.N, partialSums, Ns, getRNG())
+    sampleMultinomial!(smcio.N, partialSums, Ns, Random.default_rng())
   end
 
   cumsum!(NsPartial,Ns)

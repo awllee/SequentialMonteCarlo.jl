@@ -1,7 +1,7 @@
 module SequentialMonteCarlo
 
 import Statistics.mean
-using RNGPool
+using Random
 
 include("structures.jl")
 include("categorical.jl")

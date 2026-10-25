@@ -1,9 +1,9 @@
 using SequentialMonteCarlo
-using RNGPool
+using Random
 using SMCExamples.LinearGaussian
 using Test
 
-setRNGs(0)
+Random.seed!(0)
 
 model, theta, ys, ko = LinearGaussian.defaultLGModel(5)
 
