@@ -97,4 +97,39 @@ jobs:
         run: julia --color=yes --project=docs docs/make.jl ${{ github.event_name == 'push' && '--deploy' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+      # Documenter updates the versioned site on gh-pages using GITHUB_TOKEN.
+      # Token-authenticated pushes do not trigger branch-based Pages builds,
+      # so publish that complete site explicitly through the Pages API.
+      - name: Check out versioned documentation
+        if: github.event_name == 'push'
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: .ci/documentation-site
+          persist-credentials: false
+      - name: Upload documentation site
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .ci/documentation-site
+
+  pages:
+    name: Publish documentation
+    needs: docs
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # Serialize site deployments, including branch and release-tag builds.
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    steps:
+      - name: Deploy documentation site
+        id: deployment
+        uses: actions/deploy-pages@v4
