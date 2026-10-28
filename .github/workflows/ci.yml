@@ -32,14 +32,6 @@ jobs:
         threads: ['1', '2,1']
     steps:
       - uses: actions/checkout@v7
-      # Temporary until SMCExamples 0.7 is registered. Omit ref to follow its
-      # default branch; the RNG migration must be pushed there before CI runs.
-      - name: Check out companion examples
-        uses: actions/checkout@v7
-        with:
-          repository: awllee/SMCExamples.jl
-          path: .ci/SMCExamples
-          persist-credentials: false
       - uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.version }}
@@ -55,10 +47,7 @@ jobs:
           # Resolve each Julia version independently of the committed manifest.
           # Keep SMCExamples a test dependency; it depends on this package itself.
           Pkg.activate(; temp=true)
-          Pkg.develop([
-            PackageSpec(path=pwd()),
-            PackageSpec(path=joinpath(pwd(), ".ci", "SMCExamples")),
-          ])
+          Pkg.develop(PackageSpec(path=pwd()))
           Pkg.test("SequentialMonteCarlo";
             coverage=ENV["CI_COVERAGE"] == "true",
             julia_args=["--check-bounds=yes"])
