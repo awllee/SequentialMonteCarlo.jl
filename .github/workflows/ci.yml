@@ -94,21 +94,21 @@ jobs:
           Pkg.develop(PackageSpec(path=pwd()))
           Pkg.instantiate()
       - name: Build and deploy documentation
-        run: julia --color=yes --project=docs docs/make.jl ${{ github.event_name == 'push' && '--deploy' || '' }}
+        run: julia --color=yes --project=docs docs/make.jl ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && '--deploy' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Documenter updates the versioned site on gh-pages using GITHUB_TOKEN.
       # Token-authenticated pushes do not trigger branch-based Pages builds,
       # so publish that complete site explicitly through the Pages API.
       - name: Check out versioned documentation
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: .ci/documentation-site
           persist-credentials: false
       - name: Upload documentation site
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-pages-artifact@v3
         with:
           path: .ci/documentation-site
@@ -116,7 +116,7 @@ jobs:
   pages:
     name: Publish documentation
     needs: docs
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

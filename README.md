@@ -122,3 +122,18 @@ Pkg.activate(; temp=true)
 Pkg.develop([PackageSpec(path=smcpath), PackageSpec(path=examplespath)])
 Pkg.test("SequentialMonteCarlo")
 ```
+
+## Release documentation
+
+TagBot uses GitHub's automatic `GITHUB_TOKEN`, without an SSH deploy key.
+Its tags do not trigger CI, so after TagBot creates a release tag, manually run
+CI on that tag to build and publish the versioned documentation. For example,
+with the GitHub CLI installed and authenticated:
+
+```sh
+gh workflow run ci.yml --repo awllee/SequentialMonteCarlo.jl --ref v0.7.0
+```
+
+Replace `v0.7.0` with the release tag. The workflow also runs the tests and uses
+`GITHUB_TOKEN` to publish documentation. Running it on `master` instead updates
+the development documentation.
